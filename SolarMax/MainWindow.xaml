@@ -1,0 +1,8 @@
+﻿<Window x:Class="SolarMax.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="768" Width="1024" PreviewKeyDown="Window_PreviewKeyDown" Closing="Window_Closing" MouseMove="Window_MouseMove" MouseLeftButtonUp="Window_MouseLeftButtonUp">
+    <Grid Name="grdMain" Background="Black" SizeChanged="grdMain_SizeChanged" SnapsToDevicePixels="True">
+        
+    </Grid>
+</Window>
