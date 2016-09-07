@@ -1,0 +1,135 @@
+Error Summary: 7 days integration 45 sec/step
+Start Date: 2011/07/08 12:00:00.0000000 End Date: 2011/07/01 12:00:00.0000000
+Average Error: 2988.286696km
+Large Objects Average Error (Over 1E+24 kg): 14.458106km (2.0654437km per day)
+Small Objects Average Error (Under 1E+24 kg): 3413.119352km (487.5884788km per day)
+
+Sun / Mercury
+Phase Current: 179° 50' 10.138545" Actual: 179° 50' 10.139436" Error: -00° 00' 00.000891" (0.2502935km)
+Distance Current: 57969948.7545km Actual: 57969949.2027km Error: -0.44816km
+
+Sun / Venus
+Phase Current: 68° 39' 13.073595" Actual: 68° 39' 13.073614" Error: -00° 00' 00.000020" (0.0100449km)
+Distance Current: 107873235.2491km Actual: 107873235.3342km Error: -0.08512km
+
+Sun / Earth
+Phase Current: 279° 10' 08.943393" Actual: 279° 10' 08.944043" Error: -00° 00' 00.000651" (0.4794224km)
+Distance Current: 152097762.6471km Actual: 152097762.5960km Error: 0.05108km
+
+Sun / Mars
+Phase Current: 45° 38' 03.183528" Actual: 45° 38' 03.183529" Error: -00° 00' 00.000001" (0.0001627km)
+Distance Current: 218792598.5424km Actual: 218792598.5538km Error: -0.01136km
+
+Sun / Jupiter
+Phase Current: 24° 10' 48.631084" Actual: 24° 10' 48.630818" Error: 00° 00' 00.000266" (0.9530825km)
+Distance Current: 740762721.1255km Actual: 740762724.6673km Error: -3.54181km
+
+Sun / Saturn
+Phase Current: 196° 37' 06.864831" Actual: 196° 37' 06.864835" Error: -00° 00' 00.000005" (0.0291815km)
+Distance Current: 1441977551.8635km Actual: 1441977552.5719km Error: -0.70847km
+
+Sun / Uranus
+Phase Current: 01° 28' 42.959033" Actual: 01° 28' 42.959892" Error: -00° 00' 00.000859" (12.5116999km)
+Distance Current: 3004460832.6018km Actual: 3004460762.8708km Error: 69.73103km
+
+Sun / Neptune
+Phase Current: 329° 02' 04.189970" Actual: 329° 02' 04.189886" Error: 00° 00' 00.000085" (1.8382299km)
+Distance Current: 4489173856.8671km Actual: 4489173856.9331km Error: -0.06601km
+
+Sun / Pluto
+Phase Current: 276° 03' 06.024463" Actual: 276° 03' 06.036765" Error: -00° 00' 00.012302" (285.9822512km)
+Distance Current: 4795132897.9556km Actual: 4795132844.4746km Error: 53.48104km
+
+Earth / Moon
+Phase Current: 100° 45' 27.965570" Actual: 100° 45' 28.204931" Error: -00° 00' 00.239362" (0.4426016km)
+Distance Current: 381403.0046km Actual: 381403.1207km Error: -0.11614km
+
+Mars / Phobos
+Phase Current: 164° 26' 00.946546" Actual: 156° 26' 49.291069" Error: 07° 59' 11.655478" (1294.7590530km)
+Distance Current: 9318.7690km Actual: 9309.4493km Error: 9.31968km
+
+Mars / Deimos
+Phase Current: 333° 51' 12.260294" Actual: 333° 39' 08.948866" Error: 00° 12' 03.311428" (82.2539229km)
+Distance Current: 23456.1817km Actual: 23454.0221km Error: 2.15956km
+
+Jupiter / Io
+Phase Current: 190° 10' 12.479665" Actual: 188° 19' 34.319453" Error: 01° 50' 38.160213" (13515.9902011km)
+Distance Current: 420049.2779km Actual: 420036.9418km Error: 12.33616km
+
+Jupiter / Europa
+Phase Current: 05° 42' 36.638807" Actual: 05° 20' 26.558991" Error: 00° 22' 10.079816" (4285.7199133km)
+Distance Current: 664621.2531km Actual: 664618.8784km Error: 2.37461km
+
+Saturn / Titan
+Phase Current: 253° 55' 59.303775" Actual: 253° 54' 47.558965" Error: 00° 01' 11.744810" (423.6614876km)
+Distance Current: 1218017.8178km Actual: 1217879.2459km Error: 138.57185km
+
+Saturn / Mimas
+Phase Current: 125° 09' 31.482372" Actual: 111° 03' 31.973520" Error: 14° 05' 59.508852" (44754.8879701km)
+Distance Current: 183713.2774km Actual: 183157.0767km Error: 556.20068km
+
+Uranus / Titania
+Phase Current: 162° 53' 52.959703" Actual: 162° 56' 18.690241" Error: -00° 02' 25.730538" (308.9575492km)
+Distance Current: 437293.8939km Actual: 437073.4552km Error: 220.43864km
+
+Neptune / Triton
+Phase Current: 329° 44' 24.852066" Actual: 329° 45' 31.744840" Error: -00° 01' 06.892774" (115.0521291km)
+Distance Current: 354764.8619km Actual: 354760.8732km Error: 3.98864km
+
+Neptune / Larissa
+Phase Current: 212° 25' 55.854016" Actual: 207° 32' 33.257936" Error: 04° 53' 22.596081" (6282.4111453km)
+Distance Current: 73705.8646km Actual: 73623.2681km Error: 82.59648km
+
+Pluto / Charon
+Phase Current: 105° 09' 08.692964" Actual: 98° 58' 56.968877" Error: 06° 10' 11.724087" (2103.2193915km)
+Distance Current: 19568.9320km Actual: 19588.9702km Error: -20.03824km
+
+Error Details:
+Moon: Error 0.15768873km Error angle from Earth: 00° 00' 00.240736"
+Mercury: Error 0.51320226km Error angle from Earth: 00° 00' 00.001183"
+Venus: Error 0.08571023km Error angle from Earth: 00° 00' 00.000363"
+Earth: Error 0.48381628km
+Mars: Error 0.01136408km Error angle from Earth: 00° 00' 00.000235"
+Jupiter: Error 3.66776403km Error angle from Earth: 00° 00' 00.000372"
+Saturn: Error 0.70937618km Error angle from Earth: 00° 00' 00.000024"
+Uranus: Error 79.95965534km Error angle from Earth: 00° 00' 00.002789"
+Neptune: Error 1.84231357km Error angle from Earth: 00° 00' 00.000103"
+Pluto: Error 498.13496999km Error angle from Earth: 00° 00' 00.021981"
+Ceres: Error 28.78509772km Error angle from Earth: 00° 00' 00.015077"
+Haumea: Error 0.02915334km Error angle from Earth: 00° 00' 00.000007"
+Makemake: Error 0.02792023km Error angle from Earth: 00° 00' 00.000008"
+Eris: Error 0.01141028km Error angle from Earth: 00° 00' 00.000003"
+Vesta: Error 41.62015656km Error angle from Earth: 00° 00' 00.031211"
+Sedna: Error 0.01335490km Error angle from Earth: 00° 00' 00.000005"
+2002 TC302: Error 0.04099734km Error angle from Earth: 00° 00' 00.000006"
+2007 OR10: Error 0.01239282km Error angle from Earth: 00° 00' 00.000006"
+Ixion: Error 0.04602574km Error angle from Earth: 00° 00' 00.000015"
+Quaoar: Error 0.04181249km Error angle from Earth: 00° 00' 00.000015"
+Orcus: Error 0.03422743km Error angle from Earth: 00° 00' 00.000010"
+Pallas: Error 125.09294812km Error angle from Earth: 00° 00' 00.064959"
+Phobos: Error 1176.91305442km Error angle from Earth: 00° 00' 00.110359"
+Deimos: Error 74.41733045km Error angle from Earth: 00° 00' 00.005172"
+Io: Error 13522.67894633km Error angle from Earth: 00° 00' 03.170817"
+Europa: Error 4289.30057260km Error angle from Earth: 00° 00' 00.972547"
+Ganymede: Error 1322.55192746km Error angle from Earth: 00° 00' 00.293668"
+Callisto: Error 279.51561897km Error angle from Earth: 00° 00' 00.039227"
+Mimas: Error 44251.41303859km Error angle from Earth: 00° 00' 01.918994"
+Enceladus: Error 23574.99009794km Error angle from Earth: 00° 00' 01.558205"
+Tethys: Error 14689.67036000km Error angle from Earth: 00° 00' 01.380529"
+Dione: Error 7746.10470161km Error angle from Earth: 00° 00' 01.102084"
+Rhea: Error 3403.33989041km Error angle from Earth: 00° 00' 00.475410"
+Titan: Error 400.81518346km Error angle from Earth: 00° 00' 00.041282"
+Iapetus: Error 2.76778281km Error angle from Earth: 00° 00' 00.000191"
+Ariel: Error 2514.66084827km Error angle from Earth: 00° 00' 00.160637"
+Umbriel: Error 3139.77995251km Error angle from Earth: 00° 00' 00.180747"
+Titania: Error 1752.89532940km Error angle from Earth: 00° 00' 00.109010"
+Oberon: Error 725.23979164km Error angle from Earth: 00° 00' 00.015986"
+Miranda: Error 9141.13795691km Error angle from Earth: 00° 00' 00.571594"
+Triton: Error 82.48866948km Error angle from Earth: 00° 00' 00.003683"
+Nereid: Error 1.39291330km Error angle from Earth: 00° 00' 00.000049"
+Larissa: Error 6932.08564879km Error angle from Earth: 00° 00' 00.224080"
+Proteus: Error 2109.32095898km Error angle from Earth: 00° 00' 00.049611"
+Charon: Error 1522.06835274km Error angle from Earth: 00° 00' 00.059440"
+New Horizons: Error 0.78601064km Error angle from Earth: 00° 00' 00.000039"
+Comet Halley: Error 0.07559802km Error angle from Earth: 00° 00' 00.000019"
+Apophis: Error 0.02950680km Error angle from Earth: 00° 00' 00.000362"

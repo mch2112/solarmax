@@ -1,0 +1,14 @@
+
+// REFRACTION CONSTANTS
+
+// Uncomment at most one of the temperature values:
+
+//atmospheric_temperature_celsius, 15
+atmospheric_temperature_fahrenheit, 60 
+
+atmospheric_pressure_millibars, 1013.25
+
+// DISPLAY
+
+label_font_size, 8
+planet_label_type, name // Can be 'symbol', 'name', or 'both'

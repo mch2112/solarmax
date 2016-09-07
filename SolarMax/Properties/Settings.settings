@@ -1,0 +1,72 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SolarMax.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ConstellationMode" Type="SolarMax.ConstellationMode" Scope="User">
+      <Value Profile="(Default)">LinesAndCaptions</Value>
+    </Setting>
+    <Setting Name="ProjectionMode" Type="SolarMax.ProjectionMode" Scope="User">
+      <Value Profile="(Default)">Cylindrical</Value>
+    </Setting>
+    <Setting Name="ShowEclipticGrid" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowEquatorialGrid" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ShowLocalGrid" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ViewMode" Type="SolarMax.ViewMode" Scope="User">
+      <Value Profile="(Default)">Ecliptic</Value>
+    </Setting>
+    <Setting Name="ShowInstruments" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowHelp" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="CaptionMode" Type="SolarMax.CaptionMode" Scope="User">
+      <Value Profile="(Default)">Auto</Value>
+    </Setting>
+    <Setting Name="ShowData" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MinStarBrightness" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="SurfaceLongitude" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-2.1377762305788766</Value>
+    </Setting>
+    <Setting Name="SurfaceLatitude" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.65663164969475551</Value>
+    </Setting>
+    <Setting Name="UseAltConstellationShapes" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="WireFrameBodyRender" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DisplayTimeUTC" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="HighQualityRender" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FullScreen" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DefaultViewTarget" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Moon</Value>
+    </Setting>
+    <Setting Name="ScreenBounds" Type="System.Drawing.Rectangle" Scope="User">
+      <Value Profile="(Default)">0, 0, 0, 0</Value>
+    </Setting>
+    <Setting Name="HighlightSunlitAreas" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowConstellationBoundaries" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
