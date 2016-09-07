@@ -1,0 +1,16 @@
+C:\Users\mhamilton\AppData\Local\Temporary Projects\SolarMaxStart\bin\Release\SolarMaxStart.exe
+C:\Users\mhamilton\AppData\Local\Temporary Projects\SolarMaxStart\bin\Release\SolarMaxStart.pdb
+C:\Users\mhamilton\AppData\Local\Temporary Projects\SolarMaxStart\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\mhamilton\AppData\Local\Temporary Projects\SolarMaxStart\obj\x86\Release\SolarMaxStart.Properties.Resources.resources
+C:\Users\mhamilton\AppData\Local\Temporary Projects\SolarMaxStart\obj\x86\Release\ResGen.read.1.tlog
+C:\Users\mhamilton\AppData\Local\Temporary Projects\SolarMaxStart\obj\x86\Release\ResGen.write.1.tlog
+C:\Users\mhamilton\AppData\Local\Temporary Projects\SolarMaxStart\obj\x86\Release\SolarMaxStart.exe
+C:\Users\mhamilton\AppData\Local\Temporary Projects\SolarMaxStart\obj\x86\Release\SolarMaxStart.pdb
+C:\Users\mhamilton\Desktop\SolarMax\SolarMaxStart\SolarMaxStart\obj\x86\Release\SolarMaxStart.exe
+C:\Users\mhamilton\Desktop\SolarMax\SolarMaxStart\SolarMaxStart\obj\x86\Release\SolarMaxStart.pdb
+C:\Users\mhamilton\Desktop\SolarMax\SolarMaxStart\SolarMaxStart\bin\Release\SolarMaxStart.exe
+C:\Users\mhamilton\Desktop\SolarMax\SolarMaxStart\SolarMaxStart\bin\Release\SolarMaxStart.pdb
+C:\Users\mhamilton\Desktop\SolarMax\SolarMaxStart\SolarMaxStart\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\mhamilton\Desktop\SolarMax\SolarMaxStart\SolarMaxStart\obj\x86\Release\SolarMaxStart.Properties.Resources.resources
+C:\Users\mhamilton\Desktop\SolarMax\SolarMaxStart\SolarMaxStart\obj\x86\Release\ResGen.read.1.tlog
+C:\Users\mhamilton\Desktop\SolarMax\SolarMaxStart\SolarMaxStart\obj\x86\Release\ResGen.write.1.tlog
