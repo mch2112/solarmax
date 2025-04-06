@@ -9,7 +9,7 @@ internal sealed class Quaternion
     public double Y { get; private set; }
     public double Z { get; private set; }
 
-    public static Quaternion Identity { get; private set; }
+    public static Quaternion Identity { get; private set; } = new Quaternion(1, 0, 0, 0);
     public Quaternion(double W, double X, double Y, double Z)
     {
         this.W = W;
@@ -18,7 +18,7 @@ internal sealed class Quaternion
         this.Z = Z;
 
 #if DEBUG
-        this.validate();
+        this.Validate();
 #endif
     }
     public Quaternion(Vector V)
@@ -28,21 +28,15 @@ internal sealed class Quaternion
         this.Y = V.Y;
         this.Z = V.Z;
 #if DEBUG
-        this.validate();
+        this.Validate();
 #endif
     }
     public Quaternion Copy() => new(this.W, this.X, this.Y, this.Z);
-    private void validate()
+    private void Validate()
     {
         if (double.IsNaN(W) || double.IsNaN(X) || double.IsNaN(Y) || double.IsNaN(Z) || double.IsInfinity(W) || double.IsInfinity(X) || double.IsInfinity(Y) || double.IsInfinity(Z))
             throw new Exception("Invalid Quaternion");
-        //if (Math.Abs(1.0 - this.Magnitude) > MathEx.EPSILON)
-        //    throw new Exception("Non-Unit Quaternion");
 
-    }
-    static Quaternion()
-    {
-        Identity = new Quaternion(1, 0, 0, 0);
     }
     public double DotProduct(Quaternion Other)
     {
@@ -182,7 +176,7 @@ internal sealed class Quaternion
         return PointMultiply(rotQuat * V, rotQuat.Conjugate);
     }
 #if DEBUG
-    public Quaternion __SlerpTo(Quaternion Target, double Factor)
+    public Quaternion SlerpToAlt(Quaternion Target, double Factor)
     {
         double cosOmega;
         double scaleFrom, scaleTo;
@@ -297,7 +291,5 @@ internal sealed class Quaternion
         return (this * fActual) + (Target * fTarget);
     }
     public override string ToString()
-    {
-        return string.Format("W: {0:0.00000} X: {1:0.00000} Y: {2:0.00000} Z: {3:0.00000}", this.W, this.X, this.Y, this.Z);
-    }
+        => $"W: {this.W:0.00000} X: {this.X:0.00000} Y: {this.Y:0.00000} Z: {this.Z:0.00000}";
 }

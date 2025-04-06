@@ -5,14 +5,6 @@ public struct QSize
     public static QSize Empty { get; private set; } = new QSize(0, 0);
     public float Width { get; set; }
     public float Height { get; set; }
-
-#if WPF
-    public QSize(System.Windows.Size Size) : this()
-    {
-        this.Width = (float)Size.Width;
-        this.Height = (float)Size.Height;
-    }
-#endif
     public QSize(float Width, float Height) : this()
     {
         this.Width = Width;

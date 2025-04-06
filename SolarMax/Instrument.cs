@@ -1,8 +1,9 @@
 ﻿using System;
+using SolarMax.Instruments;
 
 namespace SolarMax;
 
-internal abstract class Instrument(IRenderer Renderer, InstrumentDataSource DataSource, QPen LinePen, QPen BackPen, QPen TextPen) 
+internal abstract class Instrument(IRenderer Renderer, DataSourceInstrument DataSource, QPen LinePen, QPen BackPen, QPen TextPen) 
     : Widget
 {
     public QPen LinePen { get; set; } = LinePen;
@@ -19,7 +20,7 @@ internal abstract class Instrument(IRenderer Renderer, InstrumentDataSource Data
 
     protected IRenderer renderer = Renderer;
 
-    protected InstrumentDataSource dataSource = DataSource;
+    protected DataSourceInstrument dataSource = DataSource;
 
     public virtual QSize Size
     {

@@ -10,7 +10,7 @@ internal sealed partial class Physics
     private readonly DateTime TEST_DATE = new(2011, 2, 23, 12, 0, 0);
     private const bool TEST = false;
     private Ephemeris testEphemeris = null;
-    private string testReport(Ephemeris Current, Ephemeris Actual)
+    private string TestReport(Ephemeris Current, Ephemeris Actual)
     {
         if (!TEST)
             throw new Exception();
@@ -47,28 +47,28 @@ internal sealed partial class Physics
                                     errors.Where(e => e.Item1.Mass < 1E+27)
                                           .Average(e => e.Item2.Magnitude) / (double)days));
 
-        showPhaseDistError(Current, Actual, sb, "Sun", "Mercury");
-        showPhaseDistError(Current, Actual, sb, "Sun", "Venus");
-        showPhaseDistError(Current, Actual, sb, "Sun", "Earth");
-        showPhaseDistError(Current, Actual, sb, "Sun", "Mars");
-        showPhaseDistError(Current, Actual, sb, "Sun", "Jupiter");
-        showPhaseDistError(Current, Actual, sb, "Sun", "Saturn");
-        showPhaseDistError(Current, Actual, sb, "Sun", "Uranus");
-        showPhaseDistError(Current, Actual, sb, "Sun", "Neptune");
-        showPhaseDistError(Current, Actual, sb, "Sun", "Pluto");
-        showPhaseDistError(Current, Actual, sb, "Earth", "Moon");
-        showPhaseDistError(Current, Actual, sb, "Mars", "Phobos");
-        showPhaseDistError(Current, Actual, sb, "Mars", "Deimos");
-        showPhaseDistError(Current, Actual, sb, "Jupiter", "Io");
-        showPhaseDistError(Current, Actual, sb, "Jupiter", "Europa");
-        showPhaseDistError(Current, Actual, sb, "Jupiter", "Ganymede");
-        showPhaseDistError(Current, Actual, sb, "Jupiter", "Callisto");
-        showPhaseDistError(Current, Actual, sb, "Saturn", "Titan");
-        showPhaseDistError(Current, Actual, sb, "Saturn", "Mimas");
-        showPhaseDistError(Current, Actual, sb, "Uranus", "Titania");
-        showPhaseDistError(Current, Actual, sb, "Neptune", "Triton");
-        showPhaseDistError(Current, Actual, sb, "Neptune", "Larissa");
-        showPhaseDistError(Current, Actual, sb, "Pluto", "Charon");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Mercury");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Venus");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Earth");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Mars");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Jupiter");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Saturn");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Uranus");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Neptune");
+        ShowPhaseDistError(Current, Actual, sb, "Sun", "Pluto");
+        ShowPhaseDistError(Current, Actual, sb, "Earth", "Moon");
+        ShowPhaseDistError(Current, Actual, sb, "Mars", "Phobos");
+        ShowPhaseDistError(Current, Actual, sb, "Mars", "Deimos");
+        ShowPhaseDistError(Current, Actual, sb, "Jupiter", "Io");
+        ShowPhaseDistError(Current, Actual, sb, "Jupiter", "Europa");
+        ShowPhaseDistError(Current, Actual, sb, "Jupiter", "Ganymede");
+        ShowPhaseDistError(Current, Actual, sb, "Jupiter", "Callisto");
+        ShowPhaseDistError(Current, Actual, sb, "Saturn", "Titan");
+        ShowPhaseDistError(Current, Actual, sb, "Saturn", "Mimas");
+        ShowPhaseDistError(Current, Actual, sb, "Uranus", "Titania");
+        ShowPhaseDistError(Current, Actual, sb, "Neptune", "Triton");
+        ShowPhaseDistError(Current, Actual, sb, "Neptune", "Larissa");
+        ShowPhaseDistError(Current, Actual, sb, "Pluto", "Charon");
 
         sb.AppendLine();
         sb.AppendLine("Error Details:");
@@ -85,7 +85,7 @@ internal sealed partial class Physics
         return sb.ToString();
     }
 
-    private static void showPhaseDistError(Ephemeris Current, Ephemeris Actual, StringBuilder sb, string Planet, string Moon)
+    private static void ShowPhaseDistError(Ephemeris Current, Ephemeris Actual, StringBuilder sb, string Planet, string Moon)
     {
         sb.AppendLine();
         sb.AppendLine($"{Planet} / {Moon}");

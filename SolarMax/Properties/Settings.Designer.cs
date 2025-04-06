@@ -26,9 +26,9 @@ namespace SolarMax.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("LinesAndCaptions")]
-        public global::SolarMax.ConstellationMode ConstellationMode {
+        public global::SolarMax.Controllers.ConstellationMode ConstellationMode {
             get {
-                return ((global::SolarMax.ConstellationMode)(this["ConstellationMode"]));
+                return ((global::SolarMax.Controllers.ConstellationMode)(this["ConstellationMode"]));
             }
             set {
                 this["ConstellationMode"] = value;
@@ -122,9 +122,9 @@ namespace SolarMax.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Auto")]
-        public global::SolarMax.CaptionMode CaptionMode {
+        public global::SolarMax.Controllers.CaptionMode CaptionMode {
             get {
-                return ((global::SolarMax.CaptionMode)(this["CaptionMode"]));
+                return ((global::SolarMax.Controllers.CaptionMode)(this["CaptionMode"]));
             }
             set {
                 this["CaptionMode"] = value;

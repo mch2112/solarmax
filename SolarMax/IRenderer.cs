@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
+using SolarMax.Controllers;
+
 namespace SolarMax;
 
 interface IRenderer
 {
-#if WPF
-    System.Windows.Media.Imaging.WriteableBitmap DrawingTarget { get; set; }
-    List<Tuple<string, QPoint, QPen, QFont, bool>> PendingText { get; }
-#else
     System.Drawing.Graphics DrawingTarget { get; set; }
-#endif
     void DrawBodies(CaptionMode CaptionMode, double Zoom);
 
     void DrawArc(QRectangle Rectangle, double StartAngle, double SweepAngle, QPen Pen);

@@ -248,7 +248,7 @@ public struct Vector
                        .GetRotationAboutZAxis(azimuth);
         }
     }
-    public readonly Vector __GetTranslationRelativeToReferenceAsXAxis(Vector Reference)
+    public readonly Vector GetTranslationRelativeToReferenceAsXAxisAlt(Vector Reference)
     {
         return this.GetRotationAboutZAxis(-Reference.Azimuth)
                    .GetRotationAboutYAxis(Reference.Inclination);
@@ -275,11 +275,6 @@ public struct Vector
             throw new Exception("AngleDiffAbs < 0");
 #endif
         return result;
-
-        // Old way, more error
-        //return (V.IsZero || this.IsZero) ?
-        //        0.0 :
-        //        Math.Abs(Math.Acos(Math.Min(1.0, this.Unit * V.Unit)));
     }
     public readonly Vector Slerp(Vector Target, double FractionToRotate)
     {

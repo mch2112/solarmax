@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-#if WPF
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-#else
 using System.Drawing;
-#endif
+
+using SolarMax.Controllers;
 
 namespace SolarMax;
 
-internal sealed class Renderer : SolarMax.IRenderer
+internal sealed class Renderer : IRenderer
 {
     public const float AUTO_CAPTION_THRESHOLD = 0.03f;
     public const string DEFAULT_FONT_NAME = "Calibri";
@@ -45,19 +41,12 @@ internal sealed class Renderer : SolarMax.IRenderer
     public List<CelestialBody> RenderLocations { get; private set; }
     public int NumRenderLocations { get; private set; }
 
-#if WPF
-    public List<Tuple<string, QPoint, QPen, QFont, bool>> PendingText { get; private set; }
-#endif
-
     public Renderer(ScreenSaverMode ScreenSaverMode, Projector Projector)
     {
         this.projector = Projector;
-#if WPF
-        PendingText = new List<Tuple<string, QPoint, QPen, QFont, bool>>();
-#endif
         switch (ScreenSaverMode)
         {
-            case SolarMax.ScreenSaverMode.ScreenSaverPreview:
+            case ScreenSaverMode.ScreenSaverPreview:
                 this.SmallFont = new QFont(DEFAULT_SMALL_FONT_NAME, 4);
                 this.SmallItalicFont = new QFont(DEFAULT_SMALL_FONT_NAME, 4, true);
                 this.Font = new QFont(DEFAULT_SMALL_FONT_NAME, 5);
@@ -80,11 +69,7 @@ internal sealed class Renderer : SolarMax.IRenderer
         for (int i = 0; i < MAX_RENDER_LOCATIONS; i++)
             RenderLocations.Add(null);
     }
-#if WPF
-    public WriteableBitmap DrawingTarget { get; set; }
-#else
     public Graphics DrawingTarget { get; set; }
-#endif
     public bool WireFrameBodyRender { get; set; }
 
     public void DrawLine(QPen Pen, QPoint P1, QPoint P2)
@@ -105,10 +90,7 @@ internal sealed class Renderer : SolarMax.IRenderer
     }
     public void DrawArc(QRectangle Rectangle, float StartAngle, float SweepAngle, QPen Pen)
     {
-#if WPF
-#else
         DrawingTarget.DrawArc(Pen.Pen, Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height, StartAngle, SweepAngle);
-#endif
     }
     public void DrawArc(QRectangle Rectangle, double StartAngle, double SweepAngle, QPen Pen)
     {
@@ -181,12 +163,12 @@ internal sealed class Renderer : SolarMax.IRenderer
     public void DrawBodies(CaptionMode CaptionMode, double Zoom)
     {
         foreach (var ttr in starsToRender)
-            renderBody(ttr, CaptionMode, Zoom);
+            RenderBody(ttr, CaptionMode, Zoom);
 
         foreach (var ttr in orbitersToRender.OrderByDescending(ttr => ttr.DistanceFromCamera)) // draw further things first
-            renderBody(ttr, CaptionMode, Zoom);
+            RenderBody(ttr, CaptionMode, Zoom);
     }
-    private void renderBody(CelestialBody Body, CaptionMode CaptionMode, double Zoom)
+    private void RenderBody(CelestialBody Body, CaptionMode CaptionMode, double Zoom)
     {
         if (projector.PositionNearlyLocked && projector.BodyWithCamera.Equals(Body) && projector.ViewMode != ViewMode.TopDown)
             return;
@@ -218,9 +200,11 @@ internal sealed class Renderer : SolarMax.IRenderer
             radiusInPixels > 7 &&
             Body.HasShape)
         {
-            var shape = (radiusInPixels > 80) ? Body.ShapeBig :
-                        (radiusInPixels > 30) ? Body.ShapeMedium :
-                                                Body.ShapeSmall;
+            var shape = (radiusInPixels > 80)
+                            ? Body.ShapeBig
+                            : (radiusInPixels > 30)
+                                    ? Body.ShapeMedium
+                                    : Body.ShapeSmall;
 
             shape.Reset();
             if (Body.HasDynamicShape)
@@ -278,11 +262,7 @@ internal sealed class Renderer : SolarMax.IRenderer
     }
     public void DrawString(string Text, QPoint Location, QPen Pen, QFont Font)
     {
-#if WPF
-        PendingText.Add(new Tuple<string,QPoint,QPen,QFont,bool>(Text, Location, Pen, Font, false));
-#else
         DrawingTarget.DrawString(Text, Font.Font, Pen.Brush, Location.X, Location.Y);
-#endif
     }
     public void DrawString(string Text, QRectangle Rectangle, QPen Pen, QFont Font)
     {
@@ -290,30 +270,17 @@ internal sealed class Renderer : SolarMax.IRenderer
     }
     public void DrawStringCentered(string Text, QPoint Location, QPen Pen, QFont Font)
     {
-#if WPF
-        PendingText.Add(new Tuple<string,QPoint,QPen,QFont,bool>(Text, Location, Pen, Font, true));
-#else
         var size = MeasureText(Text, Font);
         DrawingTarget.DrawString(Text, Font.Font, Pen.Brush, Location.X - size.Width / 2, Location.Y - size.Height / 2);
-#endif
     }
     public QSize MeasureText(string Text, QFont Font)
     {
-#if WPF
-        System.Windows.Controls.TextBlock tb = new System.Windows.Controls.TextBlock();
-        tb.FontFamily = Font.FontFamily;
-        tb.FontStyle = Font.IsItalic ? System.Windows.FontStyles.Italic : System.Windows.FontStyles.Normal;
-        tb.Text = Text;
-        tb.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-        return new QSize(tb.DesiredSize.Width + 6, tb.DesiredSize.Height + 4); // roughly equivalent with GDI+ version
-#else
         var size = DrawingTarget.MeasureString(Text, Font.Font);
         return new QSize(size.Width, size.Height);
-#endif
     }
     public QSize ScreenSize
     {
-        get { return screenSize; }
+        get => screenSize;
         set
         {
             screenSize = value;

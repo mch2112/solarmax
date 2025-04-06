@@ -60,7 +60,7 @@ internal sealed class Ephemeris
         this.VersionCount = Data[0, 0].ParseInt(Int32.MaxValue);
        
         int i = 1;
-        read(Data, ref i);
+        Read(Data, ref i);
     }
     public Ephemeris(string[,] Data, ref int Index)
     {
@@ -68,9 +68,9 @@ internal sealed class Ephemeris
         this.Items = new List<EphemerisItem>(STARTING_NUM_ORBITERS);
         this.VersionCount = 0;
 
-        read(Data, ref Index);
+        Read(Data, ref Index);
     }
-    private void read(string[,] Data, ref int Index)
+    private void Read(string[,] Data, ref int Index)
     {
         this.Date = ParseDate(Data[Index, 0]);
         if (this.VersionCount > 0)

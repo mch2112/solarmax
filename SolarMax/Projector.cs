@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolarMax.Dampeners;
+using System;
 
 namespace SolarMax;
 public enum ProjectionMode { Cylindrical, Stereographic, Orthographic }
@@ -73,15 +74,15 @@ internal class Projector
         switch (ProjectionMode)
         {
             case ProjectionMode.Cylindrical:
-                project = cylindricalProject;
+                project = CylindricalProject;
                 Zoom = (float)Camera.Zoom;
                 break;
             case ProjectionMode.Stereographic:
-                project = stereographicProject;
+                project = StereographicProject;
                 Zoom = (float)Camera.Zoom * 0.8f;
                 break;
             case ProjectionMode.Orthographic:
-                project = orthographicProject;
+                project = OrthographicProject;
                 Zoom = (float)Camera.Zoom * 0.9f;
                 break;
         }
@@ -124,15 +125,15 @@ internal class Projector
         PanView = projectionQ.Conjugate.RotateVectorFast(Vector.UnitX);
         PanUp = projectionQ.Conjugate.RotateVectorFast(Vector.UnitZ);
     }
-    private void cylindricalProject(ref Vector VectorIn3DSpace, ref QPoint P)
+    private void CylindricalProject(ref Vector VectorIn3DSpace, ref QPoint P)
     {
         P.Overwrite(halfScreenSize.Width - VectorIn3DSpace.Azimuth * Zoom, halfScreenSize.Height - VectorIn3DSpace.Inclination * Zoom);
     }
-    private void stereographicProject(ref Vector VectorIn3DSpace, ref QPoint P)
+    private void StereographicProject(ref Vector VectorIn3DSpace, ref QPoint P)
     {
         P.Overwrite(halfScreenSize.Width - Zoom * VectorIn3DSpace.Y / VectorIn3DSpace.X, halfScreenSize.Height - Zoom * VectorIn3DSpace.Z / VectorIn3DSpace.X);
     }
-    private void orthographicProject(ref Vector VectorIn3DSpace, ref QPoint P)
+    private void OrthographicProject(ref Vector VectorIn3DSpace, ref QPoint P)
     {
         double inc = VectorIn3DSpace.Inclination;
         P.Overwrite(halfScreenSize.Width - Zoom * Math.Cos(inc) * Math.Sin(VectorIn3DSpace.Azimuth), halfScreenSize.Height - Zoom * Math.Sin(inc));
@@ -142,28 +143,28 @@ internal class Projector
         ProjectedPointIn2D1 = QPoint.Empty;
         ProjectedPointIn2D2 = QPoint.Empty;
 
-        Vector v1 = orientToCamera(ref PointIn3DSpace1);
-        Vector v2 = orientToCamera(ref PointIn3DSpace2);
+        Vector v1 = OrientToCamera(ref PointIn3DSpace1);
+        Vector v2 = OrientToCamera(ref PointIn3DSpace2);
 
         if (v1.X < FRONT_CLIP_PLANE)
         {
             if (v2.X < FRONT_CLIP_PLANE)
                 return false;
 
-            clipToFrontPlane(ref v1, ref v2);
+            ClipToFrontPlane(ref v1, ref v2);
         }
         else if (v2.X < FRONT_CLIP_PLANE)
         {
             if (v1.X < FRONT_CLIP_PLANE)
                 return false;
 
-            clipToFrontPlane(ref v2, ref v1);
+            ClipToFrontPlane(ref v2, ref v1);
         }
 
         project(ref v1, ref ProjectedPointIn2D1);
         project(ref v2, ref ProjectedPointIn2D2);
 
-        return lineClip(ref ProjectedPointIn2D1, ref ProjectedPointIn2D2);
+        return LineClip(ref ProjectedPointIn2D1, ref ProjectedPointIn2D2);
     }
 
     public void PanInclination(double Amount) => panInclination += Amount * PAN_INCREMENT;
@@ -171,9 +172,9 @@ internal class Projector
     public void PanRotate(double Amount) => panRotate += Amount * TILT_INCREMENT;
     public void ResetPanning() => pan.SetTarget(Quaternion.Identity, false);
     public void Settle() => pan.LockAndTrack();
-    private Vector orientToCamera(ref Vector Target) => projectionQ.RotateVectorFast(Target - this.Position);
+    private Vector OrientToCamera(ref Vector Target) => projectionQ.RotateVectorFast(Target - this.Position);
 
-    private static void clipToFrontPlane(ref Vector ClipPoint, ref Vector OtherPoint)
+    private static void ClipToFrontPlane(ref Vector ClipPoint, ref Vector OtherPoint)
     {
         double clipAmt = (FRONT_CLIP_PLANE - ClipPoint.X) / (OtherPoint.X - ClipPoint.X);
         ClipPoint.Y += (OtherPoint.Y - ClipPoint.Y) * clipAmt;
@@ -185,7 +186,7 @@ internal class Projector
     {
         ProjectedPointIn2D = QPoint.Empty;
 
-        Vector v = orientToCamera(ref PointIn3DSpace);
+        Vector v = OrientToCamera(ref PointIn3DSpace);
 
         if (v.X < FRONT_CLIP_PLANE)
             return false;
@@ -223,7 +224,7 @@ internal class Projector
         return code;
     }
     // Cohen–Sutherland clipping algorithm
-    private bool lineClip(ref QPoint P1, ref QPoint P2)
+    private bool LineClip(ref QPoint P1, ref QPoint P2)
     {
         ClipCode cc1 = GetClipCode(P1);
         ClipCode cc2 = GetClipCode(P2);

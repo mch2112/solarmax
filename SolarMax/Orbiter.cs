@@ -76,7 +76,7 @@ internal sealed class Orbiter : CelestialBody
                 break;
         }
         
-        setupSymbolAndDisplayName();
+        SetupSymbolAndDisplayName();
 
         if (NPRightAscension != 0.0)
         {
@@ -102,16 +102,16 @@ internal sealed class Orbiter : CelestialBody
         if (this.Mass > 1E+9)
         {
             var s = Shape.GetSphere(32, 16, 8, 1.0, this.NumRings, Oblateness, true);
-            this.ShapeSmall = adjustShape(s);
+            this.ShapeSmall = AdjustShape(s);
             s = Shape.GetSphere(48, 24, 12, 1.0, this.NumRings, Oblateness, true);
-            this.ShapeMedium = adjustShape(s);
+            this.ShapeMedium = AdjustShape(s);
             s = Shape.GetSphere(64, 32, 16, 1.0, this.NumRings, Oblateness, true);
-            this.ShapeBig = adjustShape(s);
+            this.ShapeBig = AdjustShape(s);
         }
         else // artificial satellite
         {
             var s = Shape.GetCube(1);
-            adjustShape(s);
+            AdjustShape(s);
             this.ShapeSmall = this.ShapeMedium = this.ShapeBig = s.ToResettable();
         }
         this.HasShape = true;
@@ -149,7 +149,7 @@ internal sealed class Orbiter : CelestialBody
     {
         this.isDead = false;
     }
-    private void setupSymbolAndDisplayName()
+    private void SetupSymbolAndDisplayName()
     {
         this.Symbol = string.Empty;
 
@@ -193,7 +193,7 @@ internal sealed class Orbiter : CelestialBody
         => Vector.UnitX
                  .GetRotationAboutYAxis(-Declination)
                  .GetRotationAboutZAxis(Ascension);
-    private ResettableShape adjustShape(Shape S)
+    private ResettableShape AdjustShape(Shape S)
     {
         var cross = Vector.UnitZ ^ this.Axis;
         if (cross.Magnitude > MathEx.EPSILON)

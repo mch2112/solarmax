@@ -12,7 +12,7 @@ internal static class IO
     {
         try
         {
-            File.Delete(getRootedFileName(FileName, DirectoryLocation));
+            File.Delete(GetRootedFileName(FileName, DirectoryLocation));
         }
         catch { }
     }
@@ -26,7 +26,7 @@ internal static class IO
     }
     public static void WriteFile(string FileName, DirectoryLocation DirectoryLocation, string Contents)
     {
-        FileName = getRootedFileName(FileName, DirectoryLocation);
+        FileName = GetRootedFileName(FileName, DirectoryLocation);
 
         StreamWriter writer;
 
@@ -47,9 +47,9 @@ internal static class IO
     
     public static string[,] ReadFile(string FileName, DirectoryLocation DirectoryLocation, char Delimiter = ',')
     {
-        return readFile(getRootedFileName(FileName, DirectoryLocation), Delimiter);
+        return ReadFile(GetRootedFileName(FileName, DirectoryLocation), Delimiter);
     }
-    private static string[,] readFile(string FileName, char Delimiter = ',')
+    private static string[,] ReadFile(string FileName, char Delimiter = ',')
     {
         int size = 0;
         List<List<string>> strings = [];
@@ -108,17 +108,17 @@ internal static class IO
         }
         return ret;
     }
-    private static string getRootedFileName(string FileName, DirectoryLocation DirectoryLocation)
+    private static string GetRootedFileName(string FileName, DirectoryLocation DirectoryLocation)
     {
         if (!Path.IsPathRooted(FileName))
         {
             switch (DirectoryLocation)
             {
                 case DirectoryLocation.Root:
-                    FileName = Path.Combine(IO.GetExecutablePath(), FileName);
+                    FileName = Path.Combine(GetExecutablePath(), FileName);
                     break;
                 case DirectoryLocation.Data:
-                    FileName = Path.Combine(Path.Combine(IO.GetExecutablePath(), DATA_DIRECTORY_NAME), FileName);
+                    FileName = Path.Combine(Path.Combine(GetExecutablePath(), DATA_DIRECTORY_NAME), FileName);
                     break;
             }
         }

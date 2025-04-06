@@ -31,7 +31,7 @@ internal sealed partial class Physics
         }
     }
 
-    private void createOrbiters()
+    private void CreateOrbiters()
     {
         string[,] constant_data = IO.ReadFile(CONSTANT_DATA_FILENAME, DirectoryLocation.Data);
 
@@ -53,10 +53,10 @@ internal sealed partial class Physics
         this.AllOrbiters = [.. oo];
         foreach (var o in this.AllOrbiters)
         {
-            this.registerCelestialBody(o);
+            this.RegisterCelestialBody(o);
         }
     }
-    private void loadEphemeres(bool AllowLoadSnapshot)
+    private void LoadEphemeres(bool AllowLoadSnapshot)
     {
         this.availableEphemeres = Ephemeris.LoadCatalog();
 
@@ -80,10 +80,10 @@ internal sealed partial class Physics
         }
         availableEphemeres.Init();
     }
-    private void invokeEphemeris(bool SetTimeMode, bool Wait, bool EstablishGravitationalInfluences)
+    private void InvokeEphemeris(bool SetTimeMode, bool Wait, bool EstablishGravitationalInfluences)
     {
         if (Wait)
-            wait();
+            this.Wait();
 
         if (this.ephemeris.Link(this.AllOrbiters))
             EstablishGravitationalInfluences = true;
@@ -97,7 +97,7 @@ internal sealed partial class Physics
         this.totalElapsedTime = 0;
 
         if (EstablishGravitationalInfluences)
-            establishGravitationalInfluences();
+            this.EstablishGravitationalInfluences();
 
         this.integrator.Init(this);
 
@@ -120,13 +120,13 @@ internal sealed partial class Physics
         this.waitState = WaitState.None;
     }
 
-    private void wait()
+    private void Wait()
     {
         this.waitState = WaitState.Requested;
         while (this.waitState != WaitState.Confirmed && !this.Paused && !this.cancel)
             System.Threading.Thread.Sleep(0);
     }
-    private void setupCaptioning()
+    private void SetupCaptioning()
     {
         // Don't AlwaysCaption for objects close to larger ones (moons, e.g.)
         for (int i = 1; i < AllOrbiters.Length; i++)
@@ -143,7 +143,7 @@ internal sealed partial class Physics
             }
         }
     }
-    private void loadStars()
+    private void LoadStars()
     {
         string[,] ephermeris = IO.ReadFile("stars.txt", DirectoryLocation.Data);
         this.Stars = new List<Star>(DEFAULT_STARTING_NUM_STARS);
@@ -168,28 +168,28 @@ internal sealed partial class Physics
         this.Stars.Sort((a, b) => a.SortKey.CompareTo(b.SortKey));
         
         foreach (var s in this.Stars)
-            this.registerCelestialBody(s);
+            this.RegisterCelestialBody(s);
 
         this.Stars.Sort((a, b) => a.Magnitude.CompareTo(b.Magnitude));
     }
     
-    private void registerCelestialBody(Star Star)
+    private void RegisterCelestialBody(Star Star)
     {
         StarDictionary.TryAdd(Star.HRNum, Star);
-        registerCelestialBody(Star as CelestialBody);
+        RegisterCelestialBody((CelestialBody)Star);
     }
-    private void registerCelestialBody(Constellation Constellation)
+    private void RegisterCelestialBody(Constellation Constellation)
     {
         Constellation.FixConstellationLocation();
 
-        registerCelestialBody(Constellation as CelestialBody);
+        RegisterCelestialBody((CelestialBody)Constellation);
     }
-    private void registerCelestialBody(CelestialBody CB)
+    private void RegisterCelestialBody(CelestialBody CB)
     {
         AllBodies.AddLast(CB);
         BodyDictionary.TryAdd(CB.Name, CB);
     }
-    private void setupConstellations()
+    private void SetupConstellations()
     {
         string[,] Data = IO.ReadFile(Constellation.CONSTELLATION_DEF_FILENAME, DirectoryLocation.Data);
 
@@ -219,6 +219,6 @@ internal sealed partial class Physics
         this.Constellations.Sort((a, b) => a.Name.CompareTo(b.Name));
         
         foreach (var c in this.Constellations)
-            this.registerCelestialBody(c);
+            this.RegisterCelestialBody(c);
     }
 }

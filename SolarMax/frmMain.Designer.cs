@@ -39,8 +39,8 @@ namespace SolarMax
             this.ClientSize = new System.Drawing.Size(798, 543);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
-            this.Activated += new System.EventHandler(this.frmMain_Activated);
-            this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Activated += new System.EventHandler(this.FormActivated);
+            this.Load += new System.EventHandler(this.LoadForm);
             this.ResumeLayout(false);
         }
 

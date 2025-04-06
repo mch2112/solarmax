@@ -111,8 +111,8 @@ public static class MathEx
 
         return prevLatString =
                     AngleInRadians.IsNonNegative()
-                        ? AngleInRadians.toDMSString("N")
-                        : (-AngleInRadians).toDMSString("S");
+                        ? AngleInRadians.ToDMSString("N")
+                        : (-AngleInRadians).ToDMSString("S");
     }
     private static double prevLongAngle = double.MinValue;
     private static string prevLongString = string.Empty;
@@ -125,8 +125,8 @@ public static class MathEx
 
         return prevLongString = 
                     AngleInRadians.IsNonNegative()
-                        ? AngleInRadians.toDMSString("E")
-                        : (-AngleInRadians).toDMSString("W");
+                        ? AngleInRadians.ToDMSString("E")
+                        : (-AngleInRadians).ToDMSString("W");
     }
 
     private static double prevAzAngle = double.MinValue;
@@ -151,7 +151,7 @@ public static class MathEx
 
         return prevIncString = AngleInRadians.ToDMSString();
     }
-    private static string toDMSString(this double AngleInRadians, string Suffix)
+    private static string ToDMSString(this double AngleInRadians, string Suffix)
     {
         if (AngleInRadians.IsNegative())
             throw new Exception();

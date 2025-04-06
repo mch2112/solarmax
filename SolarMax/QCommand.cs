@@ -68,7 +68,7 @@ internal class QCommand
         if (keyDictionary.TryGetValue(Key, out CommandCode kc))
             this.CommandCode = kc;
         else
-            this.CommandCode = SolarMax.CommandCode.None;
+            this.CommandCode = CommandCode.None;
 
         if (this.String.Length == 0)
         {

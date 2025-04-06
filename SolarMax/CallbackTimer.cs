@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace SolarMax;
 
-public sealed class CallbackTimer : IDisposable
+public sealed partial class CallbackTimer : IDisposable
 {
     IntPtr timerHandle; // Handle to the timer.
 

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text;
+using SolarMax.Controllers;
 
 namespace SolarMax
 {
@@ -34,7 +35,7 @@ namespace SolarMax
             //}
             this.screenSaverMode = ScreenSaverMode.Application;
 
-            setup(Properties.Settings.Default.FullScreen ? FormBorderStyle.None : FormBorderStyle.Sizable);
+            Setup(Properties.Settings.Default.FullScreen ? FormBorderStyle.None : FormBorderStyle.Sizable);
             this.WindowState = Properties.Settings.Default.FullScreen ? FormWindowState.Maximized : FormWindowState.Normal;
 
             this.MouseCaptured = true;
@@ -48,7 +49,7 @@ namespace SolarMax
             this.Bounds = Bounds;
             this.WindowState = FormWindowState.Maximized;
 
-            setup(FormBorderStyle.None);
+            Setup(FormBorderStyle.None);
 
             this.MouseCaptured = true;
         }
@@ -70,20 +71,20 @@ namespace SolarMax
             this.Size = ParentRect.Size;
             this.Location = Point.Empty;
 
-            setup(FormBorderStyle.None);
+            Setup(FormBorderStyle.None);
 
             this.MouseCaptured = false;
         }
-        private void setup(FormBorderStyle FormBorderStyle)
+        private void Setup(FormBorderStyle FormBorderStyle)
         {
             drawingSurface = new DrawingSurface(screenSaverMode)
             {
                 Dock = DockStyle.Fill
             };
-            drawingSurface.Paint += paintSurface;
-            drawingSurface.MouseClick += mouseClick;
-            drawingSurface.MouseMove += mouseMove;
-            drawingSurface.MouseWheel += mouseWheel;
+            drawingSurface.Paint += PaintSurface;
+            drawingSurface.MouseClick += MouseClick;
+            drawingSurface.MouseMove += MouseMove;
+            drawingSurface.MouseWheel += MouseWheel;
             
             this.Controls.Add(drawingSurface);
             
@@ -96,9 +97,9 @@ namespace SolarMax
             if (freshStart)
                 Properties.Settings.Default.Reset();
 
-            this.controller = new Controller(screenSaverMode, shutDown, FRAMES_PER_SECOND, !freshStart);
+            this.controller = new Controller(screenSaverMode, ShutDown, FRAMES_PER_SECOND, !freshStart);
         }
-        private void frmMain_Load(object sender, EventArgs e)
+        private void LoadForm(object sender, EventArgs e)
         {
             if (this.screenSaverMode == ScreenSaverMode.Application)
             {
@@ -113,7 +114,7 @@ namespace SolarMax
                     this.Bounds = r;
             }
             timer = new CallbackTimer();
-            timerCallback  = new CallbackTimer.TimerDelegate(invalidateCallback);
+            timerCallback  = new CallbackTimer.TimerDelegate(InvalidateCallback);
             timer.Create(100, 1000 / FRAMES_PER_SECOND, timerCallback);
         }
         protected override bool ProcessCmdKey(ref Message Message, Keys KeyData)
@@ -142,7 +143,7 @@ namespace SolarMax
                         else
                         {
                             if (screenSaverMode != ScreenSaverMode.ScreenSaverPreview)
-                                toggleFullScreen();
+                                ToggleFullScreen();
                             return true;
                         }
                     default:
@@ -150,7 +151,7 @@ namespace SolarMax
                 }
             }
         }
-        private void toggleFullScreen()
+        private void ToggleFullScreen()
         {
             if (this.FormBorderStyle == System.Windows.Forms.FormBorderStyle.None)
             {
@@ -186,7 +187,7 @@ namespace SolarMax
             }
         }
 
-        private void invalidateCallback(IntPtr pWhat, bool success)
+        private void InvalidateCallback(IntPtr pWhat, bool success)
         {
             drawingSurface.Invalidate();
         }
@@ -197,11 +198,11 @@ namespace SolarMax
 #endif
         private int frameCount = 0;
         private bool showCredits = true;
-        protected void paintSurface(object sender, PaintEventArgs e)
+        protected void PaintSurface(object sender, PaintEventArgs e)
         {
             if (screenSaverMode == ScreenSaverMode.ScreenSaverPreview && !IsWindowVisible(screensaverPreviewWindowHandle))
             {
-                shutDown();
+                ShutDown();
                 return;
             }
             if (controller != null)
@@ -242,7 +243,7 @@ namespace SolarMax
         }
 
         private bool shuttingDown = false;
-        private void shutDown()
+        private void ShutDown()
         {
             if (!shuttingDown)
             {
@@ -257,23 +258,23 @@ namespace SolarMax
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            shutDown();
+            ShutDown();
         }
 
-        private void mouseMove(object sender, MouseEventArgs e)
+        private new void MouseMove(object sender, MouseEventArgs e)
         {
             if (this.MouseCaptured)
             {
                 Point p = Cursor.Position;
                 if (p != lastMouseLocation)
                 {
-                    bool ctrl = ((ModifierKeys & Keys.Control) == Keys.Control);
-                    bool shift = ((ModifierKeys & Keys.Shift) == Keys.Shift);
-                    bool alt= ((ModifierKeys & Keys.Alt) == Keys.Alt);
+                    bool ctrl = (ModifierKeys & Keys.Control) == Keys.Control;
+                    bool shift = (ModifierKeys & Keys.Shift) == Keys.Shift;
+                    bool alt= (ModifierKeys & Keys.Alt) == Keys.Alt;
 
                     if (p.X != lastMouseLocation.X)
                     {
-                        double diff = (double)(lastMouseLocation.X - p.X);
+                        double diff = lastMouseLocation.X - p.X;
                         controller.SendCommand(new QCommand(CommandCode.MouseHorizontal, shift, ctrl, alt, diff));
                     }
                     if (p.Y != lastMouseLocation.Y)
@@ -288,7 +289,7 @@ namespace SolarMax
                 }
             }
         }
-        private void mouseWheel(object sender, MouseEventArgs e)
+        private new void MouseWheel(object sender, MouseEventArgs e)
         {
             bool ctrl = ((ModifierKeys & Keys.Control) == Keys.Control);
             bool shift = ((ModifierKeys & Keys.Shift) == Keys.Shift);
@@ -313,7 +314,7 @@ namespace SolarMax
                 }
             }
         }
-        private void mouseClick(object sender, MouseEventArgs e)
+        private new void MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && !this.MouseCaptured)
             {
@@ -329,7 +330,7 @@ namespace SolarMax
                 controller?.ShowMessage("Mouse Pan and Zoom " + (this.MouseCaptured ? "On" : "Off"));
             }
         }
-        public void frmMain_Activated(object sender, System.EventArgs e)
+        public void FormActivated(object sender, EventArgs e)
         {
             controller?.ResetPanningAdjustments();
         }
@@ -355,7 +356,7 @@ namespace SolarMax
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
         #endregion

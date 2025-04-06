@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using SolarMax.Controllers;
 
 namespace SolarMax;
 
@@ -11,7 +12,7 @@ static class Program
     [STAThread]
     static void Main(string[] args)
     {
-        if (processIsRunning(System.Diagnostics.Process.GetCurrentProcess().ProcessName))
+        if (ProcessIsRunning(System.Diagnostics.Process.GetCurrentProcess().ProcessName))
         {
             MessageBox.Show(Controller.APPLICATION_NAME + " is already running.", Controller.APPLICATION_NAME, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             return;
@@ -50,7 +51,7 @@ static class Program
                     break;
                 case "/s":
                     // Full-screen mode
-                    runAsScreenSaver();
+                    RunAsScreenSaver();
                     Application.Run();
                     break;
                 default:
@@ -61,10 +62,10 @@ static class Program
         }
         else
         {
-            runAsApplication();
+            RunAsApplication();
         }
     }
-    private static void runAsScreenSaver()
+    private static void RunAsScreenSaver()
     {
         Application.Run(new frmMain(Screen.PrimaryScreen.Bounds));
         //foreach (Screen screen in Screen.AllScreens)
@@ -73,11 +74,11 @@ static class Program
         //    screensaver.Show();
         //}
     }
-    private static void runAsApplication()
+    private static void RunAsApplication()
     {
         Application.Run(new frmMain());
     }
-    private static bool processIsRunning(string process)
+    private static bool ProcessIsRunning(string process)
     {
         return System.Diagnostics.Process.GetProcessesByName(process).Length >= 2;
     }

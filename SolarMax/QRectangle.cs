@@ -44,28 +44,14 @@ public struct QRectangle
         => new(new QPoint(this.X + (this.Size.Width - Size.Width) / 2,
                           this.Y + (this.Size.Height - Size.Height) / 2),
                Size);
-    public override readonly bool Equals(object Obj)
-    {
-        return Obj is QRectangle q && this == q;
-    }
-    public readonly bool Equals(QRectangle R)
-    {
-        return this == R;
-    }
-    public override readonly int GetHashCode()
-    {
-        return this.X.GetHashCode() ^ this.Y.GetHashCode();
-    }
+    public override readonly bool Equals(object obj) => obj is QRectangle q && this == q;
+    public readonly bool Equals(QRectangle R) => this == R;
+    public override readonly int GetHashCode() => this.X.GetHashCode() ^ this.Y.GetHashCode();
     public static bool operator ==(QRectangle A, QRectangle B)
-    {
-        return A.X == B.X &&
-               A.Y == B.Y &&
-               A.Width == B.Width &&
-               A.Height == B.Height;
-    }
+        => A.X == B.X &&
+           A.Y == B.Y &&
+           A.Width == B.Width &&
+           A.Height == B.Height;
 
-    public static bool operator !=(QRectangle A, QRectangle B)
-    {
-        return !(A == B);
-    }
+    public static bool operator !=(QRectangle A, QRectangle B) => !(A == B);
 }

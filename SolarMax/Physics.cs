@@ -32,8 +32,8 @@ internal sealed partial class Physics
     
     public long Frames { get; private set; }
 
-    public DateTime EphemerisDate { get { return this.ephemeris.Date; } }
-    
+    public DateTime EphemerisDate => this.ephemeris.Date;
+
     private DateTime Date { get; set; }
     public DateTime ExternalDate { get; private set; }
     private DateTime StartDate { get; set; }
@@ -68,9 +68,9 @@ internal sealed partial class Physics
         Date = new DateTime(2011, 1, 1);
         SleepBetweenCycles = 0;
 
-        createOrbiters();
+        CreateOrbiters();
 
-        loadEphemeres(!TEST && AllowLoadSnapshot);
+        LoadEphemeres(!TEST && AllowLoadSnapshot);
 
         if (TEST)
             this.TargetDate = TEST_DATE;
@@ -79,19 +79,16 @@ internal sealed partial class Physics
 
         this.ephemeris = this.availableEphemeres.GetClosest(this.TargetDate);
 
-        invokeEphemeris(SetTimeMode: true, Wait: false, EstablishGravitationalInfluences: true);
-
-        loadStars();
-        
-        setupConstellations();
-
-        setupCaptioning();
+        InvokeEphemeris(SetTimeMode: true, Wait: false, EstablishGravitationalInfluences: true);
+        LoadStars();
+        SetupConstellations();
+        SetupCaptioning();
     }
     static Physics()
     {
         for (int i = 0; i < integrationFactors.Length; i++)
         {
-            integrationFactors[i] = ((i) == 0xFF) ? 0x100 :
+            integrationFactors[i] = (i == 0xFF) ? 0x100 :
                                     ((i & 0x7F) == 0x7F) ? 0x80 :
                                     ((i & 0x3F) == 0x3F) ? 0x40 :
                                     ((i & 0x1F) == 0x1F) ? 0x20 :
@@ -105,7 +102,7 @@ internal sealed partial class Physics
 
     public void Go(ThreadPriority Priority)
     {
-        Thread t = new(new ThreadStart(this.moveObjects))
+        Thread t = new(new ThreadStart(this.MoveObjects))
         {
             Priority = Priority,
             Name = "Integrators"
@@ -117,7 +114,7 @@ internal sealed partial class Physics
         this.cancel = true;
     }
 
-    private void moveObjects()
+    private void MoveObjects()
     {
         clock.Reset();
 
@@ -128,7 +125,7 @@ internal sealed partial class Physics
 
             while ((this.Paused || this.waitState == WaitState.Confirmed) && !cancel)
             {
-                System.Threading.Thread.Sleep(0);
+                Thread.Sleep(0);
             }
 
             if (timeMode == TimeMode.RealTime && clock.Seconds > 10)
@@ -172,13 +169,13 @@ internal sealed partial class Physics
                 if (!StartupDone)
                 {
                     dt = diff;
-                    doMovement();
+                    DoMovement();
                     StartupDone = true;
                     Ephemeris e = new(this.AllOrbiters, this.Date, this.ephemeris.Date, this.ephemeris.VersionCount + 1);
 
                     if (TEST)
                     {
-                        IO.WriteFile("test_report_" + testEphemeris.Date.ToString(Ephemeris.DATE_FORMAT_FOR_FILE_NAME) + ".txt", DirectoryLocation.Data, testReport(e, testEphemeris));
+                        IO.WriteFile("test_report_" + testEphemeris.Date.ToString(Ephemeris.DATE_FORMAT_FOR_FILE_NAME) + ".txt", DirectoryLocation.Data, TestReport(e, testEphemeris));
                     }
                     else if (!this.availableEphemeres.HasItemWithinSeconds(e.Date, MathEx.SECONDS_PER_DAY))
                     {
@@ -192,28 +189,28 @@ internal sealed partial class Physics
                 }
                 else
                 {
-                    System.Threading.Thread.Sleep(10);
+                    Thread.Sleep(10);
                     ExternalDate = this.Date.AddSeconds(diff);
                     continue;
                 }
             }
 
-            doMovement();
+            DoMovement();
 
-            System.Threading.Thread.Sleep(SleepBetweenCycles);
+            Thread.Sleep(SleepBetweenCycles);
         }
     }
-    private void doMovement()
+    private void DoMovement()
     {
         integrator.MoveOrbiters(dt);
-        rotate();
+        Rotate();
         totalElapsedTime += dt;
         Date = StartDate.AddSeconds(totalElapsedTime); // less error than Date.AddSeconds(dt)?
         ExternalDate = Date;
         Frames++;
     }
     
-    private void establishGravitationalInfluences()
+    private void EstablishGravitationalInfluences()
     {
         List<Tuple<Orbiter, Orbiter, double>> list = new(Ephemeris.STARTING_NUM_ORBITERS * Ephemeris.STARTING_NUM_ORBITERS);
         
@@ -282,7 +279,7 @@ internal sealed partial class Physics
             gi.Item1.Acceleration += gi.Item1.Position.DifferenceDirection(gi.Item2.Position) * (gi.Item2.MG / gi.Item1.Position.DistanceToSquared(gi.Item2.Position));
     }
     
-    private void rotate()
+    private void Rotate()
     {
         foreach (var t in this.AllOrbiters)
             t.Rotate(dt);

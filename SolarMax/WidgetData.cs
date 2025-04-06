@@ -1,4 +1,6 @@
-﻿namespace SolarMax;
+﻿using SolarMax.Controllers;
+
+namespace SolarMax;
 
 internal class WidgetData(Controller Controller, IRenderer Renderer, Physics Physics, Camera Camera, QPen TextPen) : Widget
 {

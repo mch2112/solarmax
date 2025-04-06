@@ -25,8 +25,8 @@ internal class Shape
     }
     public ResettableShape ToResettable() => new(this);
     public IEnumerable<LineBase> Lines => lines;
-    public virtual Shape Copy() => copyTo(new Shape());
-    private Shape copyTo(Shape s)
+    public virtual Shape Copy() => CopyTo(new Shape());
+    private Shape CopyTo(Shape s)
     {
         foreach (var l in this.Lines)
             s.AddLine(l.Copy());
@@ -227,17 +227,17 @@ internal class Shape
     }
     public static Shape GetQuarterCircle(int LineSteps, double Radius)
     {
-        return getCircle(LineSteps, Radius, MathEx.HALF_PI);
+        return GetCircle(LineSteps, Radius, MathEx.HALF_PI);
     }
     public static Shape GetHalfCircle(int LineSteps, double Radius)
     {
-        return getCircle(LineSteps, Radius, Math.PI);
+        return GetCircle(LineSteps, Radius, Math.PI);
     }
     public static Shape GetCircle(int LineSteps, double Radius)
     {
-        return getCircle(LineSteps, Radius, MathEx.TWO_PI);
+        return GetCircle(LineSteps, Radius, MathEx.TWO_PI);
     }
-    private static Shape getCircle(int LineSteps, double Radius, double Arc)
+    private static Shape GetCircle(int LineSteps, double Radius, double Arc)
     {
         var circle = new Shape();
         double increment = Arc / (double)LineSteps;
@@ -275,7 +275,7 @@ internal class Shape
     }
     public static Shape GetLatitudePointsNumeric(bool IncludeNegativeInclinations)
     {
-        getNumberGlyphs(out Shape zero,
+        GetNumberGlyphs(out Shape zero,
                         out Shape one,
                         out _,
                         out Shape three,
@@ -300,64 +300,64 @@ internal class Shape
                                        new Vector(COMPASS_POINT_DISTANCE, 1, 0)));
 
         var p15 = new Shape();
-        addGlyphs(p15, plus, one, five);
+        AddGlyphs(p15, plus, one, five);
         p15.RotateAboutZAxis(Math.PI * 1.0 / 12.0 - rotateAngle);
         points.Add(p15);
 
         var p30 = new Shape();
-        addGlyphs(p30, plus, three, zero);
+        AddGlyphs(p30, plus, three, zero);
         p30.RotateAboutZAxis(Math.PI * 2.0 / 12.0 - rotateAngle);
         points.Add(p30);
 
         var p45 = new Shape();
-        addGlyphs(p45, plus, four, five);
+        AddGlyphs(p45, plus, four, five);
         p45.RotateAboutZAxis(Math.PI * 3.0 / 12.0 - rotateAngle);
         points.Add(p45);
 
         var p60 = new Shape();
-        addGlyphs(p60, plus, six, zero);
+        AddGlyphs(p60, plus, six, zero);
         p60.RotateAboutZAxis(Math.PI * 4.0 / 12.0 - rotateAngle);
         points.Add(p60);
 
         var p75 = new Shape();
-        addGlyphs(p75, plus, seven, five);
+        AddGlyphs(p75, plus, seven, five);
         p75.RotateAboutZAxis(Math.PI * 5.0 / 12.0 - rotateAngle);
         points.Add(p75);
 
         var p90 = new Shape();
-        addGlyphs(p90, plus, nine, zero);
+        AddGlyphs(p90, plus, nine, zero);
         p90.RotateAboutZAxis(Math.PI * 6.0 / 12.0 - rotateAngle);
         points.Add(p90);
 
         if (IncludeNegativeInclinations)
         {
             var m15 = new Shape();
-            addGlyphs(m15, minus, one, five);
+            AddGlyphs(m15, minus, one, five);
             m15.RotateAboutZAxis(-Math.PI * 1.0 / 12.0 - rotateAngle);
             points.Add(m15);
 
             var m30 = new Shape();
-            addGlyphs(m30, minus, three, zero);
+            AddGlyphs(m30, minus, three, zero);
             m30.RotateAboutZAxis(-Math.PI * 2.0 / 12.0 - rotateAngle);
             points.Add(m30);
 
             var m45 = new Shape();
-            addGlyphs(m45, minus, four, five);
+            AddGlyphs(m45, minus, four, five);
             m45.RotateAboutZAxis(-Math.PI * 3.0 / 12.0 - rotateAngle);
             points.Add(m45);
 
             var m60 = new Shape();
-            addGlyphs(m60, minus, six, zero);
+            AddGlyphs(m60, minus, six, zero);
             m60.RotateAboutZAxis(-Math.PI * 4.0 / 12.0 - rotateAngle);
             points.Add(m60);
 
             var m75 = new Shape();
-            addGlyphs(m75, minus, seven, five);
+            AddGlyphs(m75, minus, seven, five);
             m75.RotateAboutZAxis(-Math.PI * 5.0 / 12.0 - rotateAngle);
             points.Add(m75);
 
             var m90 = new Shape();
-            addGlyphs(m90, minus, nine, zero);
+            AddGlyphs(m90, minus, nine, zero);
             m90.RotateAboutZAxis(-Math.PI * 6.0 / 12.0 - rotateAngle);
             points.Add(m90);
 
@@ -410,7 +410,7 @@ internal class Shape
         return s;
     }
 
-    private static void getNumberGlyphs(out Shape zero, out Shape one, out Shape two, out Shape three, out Shape four, out Shape five, out Shape six, out Shape seven, out Shape eight, out Shape nine)
+    private static void GetNumberGlyphs(out Shape zero, out Shape one, out Shape two, out Shape three, out Shape four, out Shape five, out Shape six, out Shape seven, out Shape eight, out Shape nine)
     {
         zero = new Shape();
         zero.AddLines(Line.GetLineList(new Vector(COMPASS_POINT_DISTANCE, 1, COMPASS_LETTER_HEIGHT),
@@ -479,12 +479,12 @@ internal class Shape
     }
     public static Shape GetEclipticGrid()
     {
-        var s = Shape.GetAggregate([Shape.GetSphere(36, 24, 12, GRID_SCALE, 0, 0, false, false, true), Shape.getCompassPointsNumeric(), Shape.GetLatitudePointsNumeric(true)]);
+        var s = Shape.GetAggregate([Shape.GetSphere(36, 24, 12, GRID_SCALE, 0, 0, false, false, true), Shape.GetCompassPointsNumeric(), Shape.GetLatitudePointsNumeric(true)]);
         return s;
     }
     public static Shape GetEquatorialGrid()
     {
-        var s = Shape.GetAggregate([Shape.GetSphere(36, 24, 12, GRID_SCALE, 0, 0, false, false, true), Shape.getCompassPointsNumeric(), Shape.GetLatitudePointsNumeric(true)]);
+        var s = Shape.GetAggregate([Shape.GetSphere(36, 24, 12, GRID_SCALE, 0, 0, false, false, true), Shape.GetCompassPointsNumeric(), Shape.GetLatitudePointsNumeric(true)]);
         s.RotateAbout(Vector.UnitZ ^ CelestialBody.Earth.Axis, CelestialBody.Earth.Axis.Tilt);
         return s;
     }
@@ -492,26 +492,26 @@ internal class Shape
     public static Shape GetLocalGrid(bool WithRefraction)
     {
         var s = Shape.GetAggregate([ Shape.GetSphere(36, 32, 12, GRID_SCALE, 0, 0, false, false, true, true),
-                                     Shape.getCompassPointLetters(),
+                                     Shape.GetCompassPointLetters(),
                                      Shape.GetLatitudePointsNumeric(false) ]);
 
         if (WithRefraction)
-            refract(s);
+            Refract(s);
 
         return s;
     }
-    private static void refract(Shape S)
+    private static void Refract(Shape S)
     {
         foreach (var l in S.lines)
-            refract(l);
+            Refract(l);
     }
-    private static void refract(LineBase l)
+    private static void Refract(LineBase l)
     {
         l.Adjust((Vector v) => v.GetRotationAbout(v ^ Vector.UnitZ, Util.GetInverseRefractionCorrection(v.Inclination)));
     }
-    private static Shape getCompassPointsNumeric()
+    private static Shape GetCompassPointsNumeric()
     {
-        getNumberGlyphs(out Shape zero, out Shape one, out Shape two, out Shape three, out Shape four, out Shape five, out Shape six, out Shape seven, out Shape eight, out Shape nine);
+        GetNumberGlyphs(out Shape zero, out Shape one, out Shape two, out Shape three, out Shape four, out Shape five, out Shape six, out Shape seven, out Shape eight, out Shape nine);
         Shape[] glyphs = [zero, one, two, three, four, five, six, seven, eight, nine];
 
         double rotateAngle = COMPASS_POINT_LETTER_WIDTH * COMPASS_LETTER_SPACING;
@@ -521,7 +521,7 @@ internal class Shape
         {
             var pt = new Shape();
             var deg = $"{i:000}";
-            addGlyphs(pt, glyphs[deg[0] - '0'], glyphs[deg[1] - '0'], glyphs[deg[2] - '0']);
+            AddGlyphs(pt, glyphs[deg[0] - '0'], glyphs[deg[1] - '0'], glyphs[deg[2] - '0']);
             pt.RotateAboutZAxis(-((double)i).ToRadiansFromDegrees() - rotateAngle);
             points.Add(pt);
         }
@@ -533,7 +533,7 @@ internal class Shape
         return s;
     }
 
-    private static Shape getCompassPointLetters()
+    private static Shape GetCompassPointLetters()
     {
         List<Shape> points = [];
         double rotateAngle = COMPASS_POINT_LETTER_WIDTH * COMPASS_LETTER_SPACING / 2.0;
@@ -572,64 +572,64 @@ internal class Shape
         points.Add(east.GetRotationAboutZAxis(3.0 * MathEx.HALF_PI));
 
         Shape nw = new();
-        addGlyphs(nw, north, west);
+        AddGlyphs(nw, north, west);
         nw.RotateAboutZAxis(MathEx.HALF_PI / 2.0 - rotateAngle);
         points.Add(nw);
 
         Shape ne = new();
-        addGlyphs(ne, north, east);
+        AddGlyphs(ne, north, east);
         ne.RotateAboutZAxis(-MathEx.HALF_PI / 2.0 - rotateAngle);
         points.Add(ne);
 
         Shape sw = new();
-        addGlyphs(sw, south, west);
+        AddGlyphs(sw, south, west);
         sw.RotateAboutZAxis(Math.PI * 0.75 - rotateAngle);
         points.Add(sw);
 
         Shape se = new();
-        addGlyphs(se, south, east);
+        AddGlyphs(se, south, east);
         se.RotateAboutZAxis(-Math.PI * 0.75 - rotateAngle);
         points.Add(se);
 
         rotateAngle *= 2.0;
 
         Shape nnw = new();
-        addGlyphs(nnw, north, north, west);
+        AddGlyphs(nnw, north, north, west);
         nnw.RotateAboutZAxis(Math.PI * 0.125 - rotateAngle);
         points.Add(nnw);
 
         Shape wnw = new();
-        addGlyphs(wnw, west, north, west);
+        AddGlyphs(wnw, west, north, west);
         wnw.RotateAboutZAxis(Math.PI * 0.375 - rotateAngle);
         points.Add(wnw);
 
         Shape wsw = new();
-        addGlyphs(wsw, west, south, west);
+        AddGlyphs(wsw, west, south, west);
         wsw.RotateAboutZAxis(Math.PI * 0.625 - rotateAngle);
         points.Add(wsw);
 
         Shape ssw = new();
-        addGlyphs(ssw, south, south, west);
+        AddGlyphs(ssw, south, south, west);
         ssw.RotateAboutZAxis(Math.PI * 0.875 - rotateAngle);
         points.Add(ssw);
 
         Shape sse = new();
-        addGlyphs(sse, south, south, east);
+        AddGlyphs(sse, south, south, east);
         sse.RotateAboutZAxis(Math.PI * 1.125 - rotateAngle);
         points.Add(sse);
 
         Shape ese = new();
-        addGlyphs(ese, east, south, east);
+        AddGlyphs(ese, east, south, east);
         ese.RotateAboutZAxis(Math.PI * 1.375 - rotateAngle);
         points.Add(ese);
 
         Shape ene = new();
-        addGlyphs(ene, east, north, east);
+        AddGlyphs(ene, east, north, east);
         ene.RotateAboutZAxis(Math.PI * 1.625 - rotateAngle);
         points.Add(ene);
 
         Shape nne = new();
-        addGlyphs(nne, north, north, east);
+        AddGlyphs(nne, north, north, east);
         nne.RotateAboutZAxis(Math.PI * 1.875 - rotateAngle);
         points.Add(nne);
 
@@ -641,8 +641,7 @@ internal class Shape
 
         return s;
     }
-
-    private static void addGlyphs(Shape Target, params Shape[] Glyphs)
+    private static void AddGlyphs(Shape Target, params Shape[] Glyphs)
     {
         for (int i = 0; i < Glyphs.Length - 1; i++)
         {
