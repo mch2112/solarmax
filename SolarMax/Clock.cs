@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace SolarMax
@@ -10,7 +9,7 @@ namespace SolarMax
         [DllImport("kernel32.dll")]
         static extern int QueryPerformanceCounter(ref long x);
 
-        private double ticksPerMS;
+        private readonly double ticksPerMS;
         private long ticks;
         private long tickBase;
         private bool paused = false;

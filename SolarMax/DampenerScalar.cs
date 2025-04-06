@@ -1,41 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace SolarMax
+namespace SolarMax;
+
+internal sealed class DampenerScalar(double InitialValue, double TrackFactor) : Dampener<double>(InitialValue, TrackFactor)
 {
-    internal sealed class DampenerScalar : Dampener<double>
+    private bool useLogarithmicIncrease = false;
+
+    public override void SetTarget(double Value)
     {
-        private bool uselogrithmicIncrease = false;
-        public DampenerScalar(double InitialValue, double TrackFactor)
-            : base(InitialValue, TrackFactor)
+        base.SetTarget(Value);
+        useLogarithmicIncrease = Actual > MathEx.EPSILON && Target / Actual > 10;
+    }
+    protected override void Track(double TrackFactor)
+    {
+        if (Target > Actual && useLogarithmicIncrease)
         {
-        }
-        public override void SetTarget(double Value)
-        {
-            base.SetTarget(Value);
-            uselogrithmicIncrease = Actual > MathEx.EPSILON && Target / Actual > 10;
-        }
-        protected override void Track(double TrackFactor)
-        {
-            if (Target > Actual && uselogrithmicIncrease)
-            {
-                var adj = Math.Exp(Math.Log(Target - Actual) * TrackFactor);
-                adj = Math.Max(Actual * TrackFactor / 2.0, adj);
-                if (adj > Target - Actual)
-                    Actual = Target;
-                else
-                    Actual += adj;
-            }
+            var adj = Math.Exp(Math.Log(Target - Actual) * TrackFactor);
+            adj = Math.Max(Actual * TrackFactor / 2.0, adj);
+            if (adj > Target - Actual)
+                Actual = Target;
             else
-            {
-                Actual += (Target - Actual) * TrackFactor;
-            }
+                Actual += adj;
         }
-        protected override double differenceAbsoluteValue()
+        else
         {
-            return Math.Abs(Actual - Target);
+            Actual += (Target - Actual) * TrackFactor;
         }
     }
+    protected override double differenceAbsoluteValue() => Math.Abs(Actual - Target);
 }

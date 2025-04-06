@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SolarMax
 {
@@ -13,7 +11,7 @@ namespace SolarMax
         public string AbbreviationLower { get; private set; }
         public static List<GreekLetter> AllLetters { get; private set; }
 
-        public static GreekLetter Empty = new GreekLetter();
+        public static GreekLetter Empty = new();
 
         private GreekLetter()
         {
@@ -40,32 +38,33 @@ namespace SolarMax
         }
         static GreekLetter()
         {
-            AllLetters = new List<GreekLetter>(24);
-
-            AllLetters.Add(new GreekLetter("Alpha", "Alp", 'α'));
-            AllLetters.Add(new GreekLetter("Beta", "Bet", 'β'));
-            AllLetters.Add(new GreekLetter("Gamma", "Gam", 'γ'));
-            AllLetters.Add(new GreekLetter("Delta", "Del", 'δ'));
-            AllLetters.Add(new GreekLetter("Epsilon", "Eps", 'ε'));
-            AllLetters.Add(new GreekLetter("Zeta", "Zet", 'ζ'));
-            AllLetters.Add(new GreekLetter("Eta", "Eta", 'η'));
-            AllLetters.Add(new GreekLetter("Theta", "The", 'θ'));
-            AllLetters.Add(new GreekLetter("Iota", "Iot", 'ι'));
-            AllLetters.Add(new GreekLetter("Kappa", "Kap", 'κ'));
-            AllLetters.Add(new GreekLetter("Lambda", "Lam", 'λ'));
-            AllLetters.Add(new GreekLetter("Mu", "Mu", 'μ'));
-            AllLetters.Add(new GreekLetter("Nu", "Nu", 'ν'));
-            AllLetters.Add(new GreekLetter("Xi", "Xi", 'ξ'));
-            AllLetters.Add(new GreekLetter("Omicron", "Omi", 'ο'));
-            AllLetters.Add(new GreekLetter("Pi", "Pi", 'π'));
-            AllLetters.Add(new GreekLetter("Rho", "Rho", 'ρ'));
-            AllLetters.Add(new GreekLetter("Sigma", "Sig", 'σ'));
-            AllLetters.Add(new GreekLetter("Tau", "Tau", 'τ'));
-            AllLetters.Add(new GreekLetter("Upsilon", "Ups", 'υ'));
-            AllLetters.Add(new GreekLetter("Phi", "Phi", 'φ'));
-            AllLetters.Add(new GreekLetter("Chi", "Chi", 'χ'));
-            AllLetters.Add(new GreekLetter("Psi", "Psi", 'ψ'));
-            AllLetters.Add(new GreekLetter("Omega", "Ome", 'ω'));
+            AllLetters =
+            [
+                new GreekLetter("Alpha", "Alp", 'α'),
+                new GreekLetter("Beta", "Bet", 'β'),
+                new GreekLetter("Gamma", "Gam", 'γ'),
+                new GreekLetter("Delta", "Del", 'δ'),
+                new GreekLetter("Epsilon", "Eps", 'ε'),
+                new GreekLetter("Zeta", "Zet", 'ζ'),
+                new GreekLetter("Eta", "Eta", 'η'),
+                new GreekLetter("Theta", "The", 'θ'),
+                new GreekLetter("Iota", "Iot", 'ι'),
+                new GreekLetter("Kappa", "Kap", 'κ'),
+                new GreekLetter("Lambda", "Lam", 'λ'),
+                new GreekLetter("Mu", "Mu", 'μ'),
+                new GreekLetter("Nu", "Nu", 'ν'),
+                new GreekLetter("Xi", "Xi", 'ξ'),
+                new GreekLetter("Omicron", "Omi", 'ο'),
+                new GreekLetter("Pi", "Pi", 'π'),
+                new GreekLetter("Rho", "Rho", 'ρ'),
+                new GreekLetter("Sigma", "Sig", 'σ'),
+                new GreekLetter("Tau", "Tau", 'τ'),
+                new GreekLetter("Upsilon", "Ups", 'υ'),
+                new GreekLetter("Phi", "Phi", 'φ'),
+                new GreekLetter("Chi", "Chi", 'χ'),
+                new GreekLetter("Psi", "Psi", 'ψ'),
+                new GreekLetter("Omega", "Ome", 'ω'),
+            ];
         }
         public override string ToString()
         {

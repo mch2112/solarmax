@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SolarMax
 {
@@ -16,11 +13,15 @@ namespace SolarMax
                 {
                     if (value)
                     {
-                        if (currentDialog != null)
-                            currentDialog.Close();
-
-
-                        currentDialog = new DialogFind(renderer, physics, this.ScreenSize, foundItemCallback, closeDialog, camera.BodyBeingViewed, defaultPen, borderPen, QPen.Black);
+                        currentDialog?.Close();
+                        currentDialog = new DialogFind(renderer,
+                                                       physics,
+                                                       this.ScreenSize,
+                                                       foundItemCallback,
+                                                       closeDialog,
+                                                       defaultPen,
+                                                       borderPen,
+                                                       QPen.Black);
                     }
                     else
                     {
@@ -38,9 +39,13 @@ namespace SolarMax
                 {
                     if (value)
                     {
-                        if (currentDialog != null)
-                            currentDialog.Close();
-                        currentDialog = new DialogHelp(renderer, this.ScreenSize, closeDialog, defaultPen, borderPen, QPen.Black);
+                        currentDialog?.Close();
+                        currentDialog = new DialogHelp(renderer,
+                                                       this.ScreenSize,
+                                                       closeDialog,
+                                                       defaultPen,
+                                                       borderPen,
+                                                       QPen.Black);
                     }
                     else
                     {
@@ -58,11 +63,18 @@ namespace SolarMax
                 {
                     if (value)
                     {
-                        if (currentDialog != null)
-                            currentDialog.Close();
+                        currentDialog?.Close();
 
                         physics.Paused = true;
-                        currentDialog = new DialogDateTime(renderer, closeDialog, dateChangeCallback, physics.TargetDate, DisplayTimeUTC, this.screenSize, defaultPen, borderPen, QPen.Black);
+                        currentDialog = new DialogDateTime(renderer,
+                                                           closeDialog,
+                                                           dateChangeCallback,
+                                                           physics.TargetDate,
+                                                           DisplayTimeUTC,
+                                                           this.screenSize,
+                                                           defaultPen,
+                                                           borderPen,
+                                                           QPen.Black);
                     }
                     else
                     {
@@ -71,24 +83,31 @@ namespace SolarMax
                 }
             }
         }
-        private bool InLatLongAdjustaMode
+        private bool InLatLongAdjustMode
         {
             get { return currentDialog is DialogLatLong; }
             set
             {
-                if (InLatLongAdjustaMode != value)
+                if (InLatLongAdjustMode != value)
                 {
                     if (value)
                     {
-                        if (ViewMode != SolarMax.ViewMode.Surface)
+                        if (ViewMode != ViewMode.Surface)
                         {
                             messageWidget.SetMessage("Lat / Long Adjustments in Surface Mode Only [2]");
                         }
                         else
                         {
-                            if (currentDialog != null)
-                                currentDialog.Close();
-                            currentDialog = new DialogLatLong(renderer, closeDialog, latLongChangeCallback, camera.SurfaceLatitudeTarget, camera.SurfaceLongitudeTarget, this.screenSize, defaultPen, borderPen, QPen.Black);
+                            currentDialog?.Close();
+                            currentDialog = new DialogLatLong(renderer,
+                                                              closeDialog,
+                                                              latLongChangeCallback,
+                                                              camera.SurfaceLatitudeTarget,
+                                                              camera.SurfaceLongitudeTarget,
+                                                              this.screenSize,
+                                                              defaultPen,
+                                                              borderPen,
+                                                              QPen.Black);
                         }
                     }
                     else

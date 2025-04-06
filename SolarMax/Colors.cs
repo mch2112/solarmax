@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
 
 namespace SolarMax
 {
@@ -12,17 +10,16 @@ namespace SolarMax
         private const int MAX_COLOR_INDEX_BRIGHTNESS = 255;
         private const int MIN_COLOR_INDEX_BRIGHTNESS = 10;
 
-        private static Dictionary<string, QColor> colorDictionary;
-        private static Random r = new Random();
+        private static readonly Dictionary<string, QColor> colorDictionary;
+        private static readonly Random r = new();
 
         static Colors()
         {
             try
             {
-                colorDictionary = new Dictionary<string, QColor>();
+                colorDictionary = [];
 
                 addColor("default_interface_color", 90, 90, 210);
-
                 addColor("ecliptic_compass", 0x16, 0x40, 0x40);
                 addColor("ecliptic_grid", 0x09, 0x1D, 0x1D);
                 addColor("equatorial_compass", 0x28, 0x48, 0x28);
@@ -75,25 +72,22 @@ namespace SolarMax
         }
         public static QColor GetColor(string Key, QColor Default)
         {
-            QColor c;
-            if (colorDictionary.TryGetValue(Key, out c))
+            if (colorDictionary.TryGetValue(Key, out QColor c))
                 return c;
             else
                 return Default;
         }
         public static QColor GetColor(string Key, int MinIntensityIfNotFound, int MaxIntensityIfNotFound)
         {
-            QColor c;
-            if (colorDictionary.TryGetValue(Key, out c))
+            if (colorDictionary.TryGetValue(Key, out QColor c))
                 return c;
             else
-                return Colors.GetRandomColor(MinIntensityIfNotFound,
-                                             MaxIntensityIfNotFound);
+                return GetRandomColor(MinIntensityIfNotFound,
+                                      MaxIntensityIfNotFound);
         }
         public static QColor GetColor(string Key)
         {
-            QColor c;
-            if (colorDictionary.TryGetValue(Key, out c))
+            if (colorDictionary.TryGetValue(Key, out QColor c))
                 return c;
             else
                 return new QColor(128, 128, 128);

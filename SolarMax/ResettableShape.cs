@@ -1,50 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace SolarMax
+namespace SolarMax;
+
+internal sealed class ResettableShape : Shape
 {
-    internal sealed class ResettableShape : Shape
+    private readonly List<LineBase> shadowLines;
+
+    public ResettableShape(Shape s)
     {
-        private List<LineBase> shadowLines;
+        s = s.Normalized;
 
-        public ResettableShape(Shape s)
+        Dictionary<LineBase, LineBase> copies = [];
+
+        foreach (var l in s.Lines)
         {
-            s = s.Normalized;
-
-            Dictionary<LineBase, LineBase> copies = new Dictionary<LineBase, LineBase>();
-
-            foreach (var l in s.Lines)
-            {
-                LineBase copy;
-                if (l is LineContinuation)
-                    copy = (l as LineContinuation).Copy(copies[(l as LineContinuation).Parent]);
-                else
-                    copy = l.Copy();
-                
-                copies.Add(l, copy);
-                lines.Add(copy);
-            }
-
-            shadowLines = new List<LineBase>();
-            foreach (var l in lines)
-                shadowLines.Add(l.Copy());
+            LineBase copy;
+            if (l is LineContinuation)
+                copy = (l as LineContinuation).Copy(copies[(l as LineContinuation).Parent]);
+            else
+                copy = l.Copy();
+            
+            copies.Add(l, copy);
+            lines.Add(copy);
         }
-        
-        public void Reset()
+
+        shadowLines = [];
+        foreach (var l in lines)
+            shadowLines.Add(l.Copy());
+    }
+    
+    public void Reset()
+    {
+        var target = this.Lines.GetEnumerator();
+
+        foreach (var l in this.shadowLines)
         {
-            var target = this.Lines.GetEnumerator();
-
-            foreach (var l in this.shadowLines)
-            {
-                target.MoveNext();
-                target.Current.Overwrite(l);
-            }
+            target.MoveNext();
+            target.Current.Overwrite(l);
         }
-        public override Shape Normalized
-        {
-            get { throw new NotImplementedException(); }
-        }
+    }
+    public override Shape Normalized
+    {
+        get { throw new NotImplementedException(); }
     }
 }

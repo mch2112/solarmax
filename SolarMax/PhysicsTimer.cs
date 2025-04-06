@@ -93,7 +93,7 @@ namespace SolarMax
                     {
                         wait();
                         establishGravitationalInfluences();
-                        unwait();
+                        NoWait();
                     }
                 }
             }

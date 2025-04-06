@@ -208,7 +208,6 @@ namespace SolarMax
             }
             else
             {
-                bool cantViewStars = !CanViewStars;
                 CelestialBody body = camera.BodyWithCamera;
                 do
                 {
@@ -249,11 +248,11 @@ namespace SolarMax
         }
         private bool isValidViewTarget(CelestialBody CB)
         {
-            return canRender(CB);
+            return CanRender(CB);
         }
         private bool isValidHome(CelestialBody CB)
         {
-            return (!(CB is Constellation)) && canRender(CB);
+            return (!(CB is Constellation)) && CanRender(CB);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SolarMax
 
         protected T target;
         public T Actual { get; protected set; }
-        private double trackFactorBasis;
+        private readonly double trackFactorBasis;
         private double trackFactor;
         private double trackFrameIncrease;
         

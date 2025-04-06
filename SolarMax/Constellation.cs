@@ -9,7 +9,6 @@ namespace SolarMax
     {
         public const string CONSTELLATION_DEF_FILENAME = "constellations.txt";
         public const string CONSTELLATION_BOUNDARY_FILENAME = "constellation_boundaries.txt";
-
         public const double STANDARD_CONSTELLATION_DISTANCE_PARSECS = 50;
 
         private const int MIN_INTENSITY_FOR_RANDOM_COLOR = 15;
@@ -17,24 +16,20 @@ namespace SolarMax
 
         public string GenitiveName { get; private set; }
         public string Abbreviation { get; private set; }
-
         public static bool UseAltShapes { get; set; }
-
         public static Shape ConstellationBoundaries { get; private set; }
-
         public static Dictionary<string, string> GenitiveNames { get; private set; }
         public static Dictionary<string, string> AllNames { get; private set; }
 
         private Shape normalShape;
         private Shape altShape;
-
-        public Shape Shape { get { return UseAltShapes ? altShape : normalShape; } }
+        public Shape Shape => UseAltShapes ? altShape : normalShape;
 
         private static string[,] names;
 
         public List<Star> Stars { get; private set; }
         private List<Tuple<Star, Star>> StarPairs { get; set; }
-        private Physics physics;
+        private readonly Physics physics;
 
         public Constellation(string Name, Physics Physics)
         {
@@ -42,8 +37,8 @@ namespace SolarMax
             this.FullName = "Constellation " + Name;
             this.DisplayName = this.Name;
             this.physics = Physics;
-            this.Stars = new List<Star>();
-            this.StarPairs = new List<Tuple<Star, Star>>();
+            this.Stars = [];
+            this.StarPairs = [];
             this.Color = Colors.GetColor(this.Name, Colors.GetColor("constellation_default", MIN_INTENSITY_FOR_RANDOM_COLOR, MAX_INTENSITY_FOR_RANDOM_COLOR));
             this.normalShape = new Shape();
             this.altShape = new Shape();
@@ -54,7 +49,7 @@ namespace SolarMax
             this.RadiusEnhancement = 0;
             for (int i = 0; i <= names.GetUpperBound(0); i++)
             {
-                if (names[i, 0].ToLower() == this.Name.ToLower())
+                if (names[i, 0].Equals(this.Name, StringComparison.CurrentCultureIgnoreCase))
                 {
                     this.GenitiveName = names[i, 1];
                     this.Abbreviation = names[i, 2];
@@ -64,7 +59,7 @@ namespace SolarMax
             this.SortKey = this.Name;
 #if DEBUG
             if (string.IsNullOrWhiteSpace(this.GenitiveName) || string.IsNullOrWhiteSpace(this.Abbreviation))
-                throw new Exception("Constellation without gentive name or abbreviation: " + this.Name);
+                throw new Exception("Constellation without genitive name or abbreviation: " + this.Name);
 #endif
         }
         static Constellation()
@@ -168,8 +163,8 @@ namespace SolarMax
 				{ "Volans"             , "Volantis"           , "Vol" },
 				{ "Vulpecula"          , "Vulpeculae"         , "Vul" }
             };
-            GenitiveNames = new Dictionary<string, string>();
-            AllNames = new Dictionary<string, string>();
+            GenitiveNames = [];
+            AllNames = [];
             for (int i = 0; i <= names.GetUpperBound(0); i++)
             {
                 if (!GenitiveNames.ContainsKey(names[i, 2]))
@@ -198,12 +193,12 @@ namespace SolarMax
         }
         public string Serialize()
         {
-            List<List<Star>> lls = new List<List<Star>>();
+            List<List<Star>> lls = [];
 
             string s = this.Name;
             
             foreach (var sp in this.StarPairs)
-                lls.Add(new List<Star>() { sp.Item1, sp.Item2 });
+                lls.Add([sp.Item1, sp.Item2]);
 
             bool done;
 
@@ -227,7 +222,7 @@ namespace SolarMax
         }
         public Constellation WithLine(int Index, params int[] HRNums)
         {
-            return this.WithLines(Index, HRNums.ToList());
+            return this.WithLines(Index, [.. HRNums]);
         }
         public Constellation WithLines(int Index, List<int> HRNums)
         {
@@ -339,28 +334,26 @@ namespace SolarMax
         
         private static Shape getConstellationBoundaries()
         {
-            string[,] s = IO.ReadFile(Constellation.CONSTELLATION_BOUNDARY_FILENAME, DirectoryLocation.Data);
+            string[,] s = IO.ReadFile(CONSTELLATION_BOUNDARY_FILENAME, DirectoryLocation.Data);
 
             var cb = new Shape();
-            List<LineBase> lines = new List<LineBase>();
+            List<LineBase> lines = [];
             for (int i = 0; i <= s.GetUpperBound(0); i++)
             {
-                if (s[i, 0].StartsWith("<"))
+                if (s[i, 0].StartsWith('<'))
                     continue;
 
                 lines.Add(new Line(Util.LocationFromEquatorialCoords(s[i, 0].ParseDouble(0),
                                                                      s[i, 1].ParseDouble(0),
-                                                                     Constellation.STANDARD_CONSTELLATION_DISTANCE_PARSECS),
+                                                                     STANDARD_CONSTELLATION_DISTANCE_PARSECS),
                                    Util.LocationFromEquatorialCoords(s[i, 2].ParseDouble(0),
                                                                      s[i, 3].ParseDouble(0),
-                                                                     Constellation.STANDARD_CONSTELLATION_DISTANCE_PARSECS)));
+                                                                     STANDARD_CONSTELLATION_DISTANCE_PARSECS)));
             }
             cb.AddLines(lines);
             return cb.Normalized;
         }
         public static string SerializeConstellationList(List<Constellation> Input)
-        {
-            return String.Concat(Input.Select(c => c.Serialize() + Environment.NewLine));
-        }
+            => string.Concat(Input.Select(c => c.Serialize() + Environment.NewLine));
     }
 }

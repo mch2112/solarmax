@@ -1,16 +1,13 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
-namespace SolarMax
+namespace SolarMax;
+internal static class DrawingEx
 {
-    internal static class DrawingEx
+    public static bool IsContainedIn(this Rectangle R, Rectangle Other)
     {
-        public static bool IsContainedIn(this Rectangle R, Rectangle Other)
-        {
-            return Other.X <= R.X &&
-                   Other.Y <= R.Y &&
-                   Other.Right >= R.Right &&
-                   Other.Bottom >= R.Bottom;
-        }
+        return Other.X <= R.X &&
+               Other.Y <= R.Y &&
+               Other.Right >= R.Right &&
+               Other.Bottom >= R.Bottom;
     }
 }

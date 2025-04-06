@@ -50,9 +50,9 @@ namespace SolarMax
 
         private QColor color = QColor.Black;
 
-        public bool IsEarth { get { return this.Equals(CelestialBody.Earth); } }
-        public bool IsSun { get { return this.Equals(CelestialBody.Sun); } }
-        public bool IsMoon { get { return this.Equals(CelestialBody.Moon); } }
+        public bool IsEarth => Equals(Earth);
+        public bool IsSun => Equals(Sun);
+        public bool IsMoon => Equals(Moon);
 
         public abstract IEnumerable<string> SearchNames { get; }
 
@@ -70,13 +70,14 @@ namespace SolarMax
         public virtual bool IsDead { get { return false; } }
         public string SerializeEphermis()
         {
-            var loc = (this.Position - CelestialBody.Sun.Position) / 1000;
-            var vel = (this.Velocity - CelestialBody.Sun.Velocity) / 1000;
+            var loc = (this.Position - Sun.Position) / 1000;
+            var vel = (this.Velocity - Sun.Velocity) / 1000;
 
-            return this.Name + "," + loc.Serialize() + "," + vel.Serialize();
+            return $"{this.Name},{loc.Serialize()},{vel.Serialize()}";
         }
         protected virtual QColor Color
         {
+            get { return color; }
             set
             {
                 this.color = value;
@@ -85,11 +86,8 @@ namespace SolarMax
                 this.FrontPen = new QPen(value.Brighten());
                 this.BackPen = this.CaptionPen;
             }
-            get { return color; }
         }
         public double AngleSubtendedFromDistance(double Distance)
-        {
-            return 2.0 * Math.Abs(Math.Atan2(this.Radius, Distance + this.Radius));
-        }
+            => 2.0 * Math.Abs(Math.Atan2(this.Radius, Distance + this.Radius));
     }
 }

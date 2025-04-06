@@ -14,8 +14,8 @@ namespace SolarMax
         
         private Controller controller;
         private Point lastMouseLocation = Point.Empty;
-        private ScreenSaverMode screenSaverMode;
-        private IntPtr screensaverPreviewWindowHandle = IntPtr.Zero;
+        private readonly ScreenSaverMode screenSaverMode;
+        private readonly IntPtr screensaverPreviewWindowHandle = IntPtr.Zero;
         private CallbackTimer timer;
         private CallbackTimer.TimerDelegate timerCallback;
 
@@ -66,8 +66,7 @@ namespace SolarMax
             SetWindowLong(this.Handle, -16, new IntPtr(GetWindowLong(this.Handle, -16) | 0x40000000));
 
             // Place our window inside the parent
-            Rectangle ParentRect;
-            GetClientRect(screensaverPreviewWindowHandle, out ParentRect);
+            GetClientRect(screensaverPreviewWindowHandle, out Rectangle ParentRect);
             this.Size = ParentRect.Size;
             this.Location = Point.Empty;
 
@@ -77,8 +76,10 @@ namespace SolarMax
         }
         private void setup(FormBorderStyle FormBorderStyle)
         {
-            drawingSurface = new DrawingSurface(screenSaverMode);
-            drawingSurface.Dock = DockStyle.Fill;
+            drawingSurface = new DrawingSurface(screenSaverMode)
+            {
+                Dock = DockStyle.Fill
+            };
             drawingSurface.Paint += paintSurface;
             drawingSurface.MouseClick += mouseClick;
             drawingSurface.MouseMove += mouseMove;
@@ -134,7 +135,7 @@ namespace SolarMax
                     case Keys.Tab:
                         if (alt)
                         {
-                            // Switching to anothe app; let the cursor go.
+                            // Switching to another app; let the cursor go.
                             MouseCaptured = false;
                             return false;
                         }
@@ -158,15 +159,15 @@ namespace SolarMax
                 this.MouseCaptured = false;
                 var resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
                 this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-                if (controller != null)
-                    controller.ShowMessage("Window Mode");
+                
+                controller?.ShowMessage("Window Mode");
             }
             else
             {
                 this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
                 this.WindowState = FormWindowState.Maximized;
-                if (controller != null)
-                    controller.ShowMessage("Full Screen Mode");
+                
+                controller?.ShowMessage("Full Screen Mode");
             }
         }
         protected override void OnDeactivate(EventArgs e)
@@ -226,7 +227,7 @@ namespace SolarMax
         }
         protected override CreateParams CreateParams
         {
-            // needed to prevent screensaver hook from being trampeled
+            // needed to prevent screensaver hook from being trampled
             get
             {
                 CreateParams createParams = base.CreateParams;
@@ -249,7 +250,7 @@ namespace SolarMax
                 timer.Delete();
                 controller.Cancel();
                 Properties.Settings.Default.ScreenBounds = this.Bounds;
-                Properties.Settings.Default.FullScreen = this.FormBorderStyle == System.Windows.Forms.FormBorderStyle.None;
+                Properties.Settings.Default.FullScreen = this.FormBorderStyle == FormBorderStyle.None;
                 Properties.Settings.Default.Save();
                 Application.Exit();
             }
@@ -280,14 +281,14 @@ namespace SolarMax
                         double diff = (double)(lastMouseLocation.Y - p.Y);
                         controller.SendCommand(new QCommand(CommandCode.MouseVertical, shift, ctrl, alt, diff)); 
                     }
-                    if (true || this.FormBorderStyle == System.Windows.Forms.FormBorderStyle.None) // fullscreen
+                    if (true || this.FormBorderStyle == FormBorderStyle.None) // full screen
                         Cursor.Position = lastMouseLocation = new Point((int)(controller.ScreenSize.Width / 2 + this.Location.X), (int)(controller.ScreenSize.Height / 2 + this.Location.Y));
                     else
                         lastMouseLocation = Cursor.Position;
                 }
             }
         }
-        private void mouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void mouseWheel(object sender, MouseEventArgs e)
         {
             bool ctrl = ((ModifierKeys & Keys.Control) == Keys.Control);
             bool shift = ((ModifierKeys & Keys.Shift) == Keys.Shift);
@@ -314,7 +315,7 @@ namespace SolarMax
         }
         private void mouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left && !this.MouseCaptured)
+            if (e.Button == MouseButtons.Left && !this.MouseCaptured)
             {
                 bool ctrl = ((ModifierKeys & Keys.Control) == Keys.Control);
                 bool shift = ((ModifierKeys & Keys.Shift) == Keys.Shift);
@@ -322,17 +323,15 @@ namespace SolarMax
 
                 controller.SendCommand(new QCommand(CommandCode.MouseClick, shift, ctrl, alt, new QPoint(e.Location)));
             }
-            else if ((this.MouseCaptured || (e.Button == System.Windows.Forms.MouseButtons.Right)) && screenSaverMode != ScreenSaverMode.ScreenSaverPreview)
+            else if ((this.MouseCaptured || (e.Button == MouseButtons.Right)) && screenSaverMode != ScreenSaverMode.ScreenSaverPreview)
             {
                 this.MouseCaptured = !this.MouseCaptured;
-                if (controller != null)
-                    controller.ShowMessage("Mouse Pan and Zoom " + (this.MouseCaptured ? "On" : "Off"));
+                controller?.ShowMessage("Mouse Pan and Zoom " + (this.MouseCaptured ? "On" : "Off"));
             }
         }
         public void frmMain_Activated(object sender, System.EventArgs e)
         {
-            if (controller != null)
-                controller.ResetPanningAdjustments();
+            controller?.ResetPanningAdjustments();
         }
 
         #region Win32 API functions
