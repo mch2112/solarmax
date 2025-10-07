@@ -5,14 +5,10 @@ namespace SolarMax;
 
 public struct QPoint
 {
-    public static QPoint Empty { get; private set; }
+    public static QPoint Empty { get; private set; } = new QPoint(0, 0);
     public float X { get; set; }
     public float Y { get; set; }
 
-    static QPoint()
-    {
-        Empty = new QPoint(0f, 0f);
-    }
     public QPoint(float X, float Y) : this()
     {
         this.X = X;

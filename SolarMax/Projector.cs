@@ -1,5 +1,5 @@
-﻿using SolarMax.Dampeners;
-using System;
+﻿using System;
+using SolarMax.Dampeners;
 
 namespace SolarMax;
 public enum ProjectionMode { Cylindrical, Stereographic, Orthographic }
@@ -8,10 +8,9 @@ internal class Projector
 {
     private const double TILT_INCREMENT = 5.0 * MathEx.RAD_PER_DEG; // five degrees
     private const double PAN_INCREMENT = 150.0;
-    
-    private delegate void projectDelegate(ref Vector V, ref QPoint P);
-
     private const double FRONT_CLIP_PLANE = 1E+5;
+
+    private delegate void projectDelegate(ref Vector V, ref QPoint P);
 
     public Vector Position { get; private set; }
     public bool PositionNearlyLocked { get; private set; }
@@ -20,14 +19,13 @@ internal class Projector
     public CelestialBody BodyWithCamera { get; private set; }
     public CelestialBody BodyBeingViewed { get; private set; }
 
-    private QSize screenSize = QSize.Empty;
     private QSize halfScreenSize;
     private QPoint minPoint;
     private QPoint maxPoint;
-    
+
     private projectDelegate project;
 
-    private readonly DampenerQuaternion pan; 
+    private readonly DampenerQuaternion pan;
     private Quaternion projectionQ;
     private double panAzimuth = 0;
     private double panInclination = 0;
@@ -36,24 +34,16 @@ internal class Projector
     public Projector(ProjectionMode ProjectionMode)
     {
         this.ProjectionMode = ProjectionMode;
-        pan = new DampenerQuaternion(Quaternion.Identity, 0.1)
+        this.pan = new DampenerQuaternion(Quaternion.Identity, 0.1)
         {
             AutoLockThreshold = 0.01,
             NearLockThreshold = 0.02,
             AutoLock = true
         };
     }
-    
+
     public ProjectionMode ProjectionMode { get; set; }
-    public QSize ScreenSize
-    {
-        get { return this.screenSize; }
-        set 
-        {
-            if (this.screenSize != value)
-                this.screenSize = value;
-        }
-    }
+    public QSize ScreenSize { get; set; } = QSize.Empty;
     public Vector PanView { get; private set; }
     public Vector PanUp { get; private set; }
     public void SetupForProjection(Camera Camera)
@@ -69,7 +59,7 @@ internal class Projector
         halfScreenSize = new QSize(ScreenSize.Width / 2, ScreenSize.Height / 2);
 
         minPoint = new QPoint(0, 0);
-        maxPoint = new QPoint(screenSize.Width, screenSize.Height);
+        maxPoint = new QPoint(ScreenSize.Width, ScreenSize.Height);
 
         switch (ProjectionMode)
         {
@@ -86,7 +76,7 @@ internal class Projector
                 Zoom = (float)Camera.Zoom * 0.9f;
                 break;
         }
-        
+
         // Get Camera Rotation
         var camAz = Quaternion.GetRotationQuaternion(Vector.UnitZ, -camView.Azimuth);
         var camInc = Quaternion.GetRotationQuaternion(Vector.UnitY, camView.Inclination);
@@ -105,16 +95,16 @@ internal class Projector
         var camRot = Quaternion.GetRotationQuaternion(Vector.UnitX, Math.Atan2(upTrans.Y, upTrans.Z));
 
         var transWRotate = camRot * trans;
-        
+
         // Get Panning Rotation
         var az = Quaternion.GetRotationQuaternion(Vector.UnitZ, panAzimuth);
-        panAzimuth = 0;
-        
+        this.panAzimuth = 0;
+
         var inc = Quaternion.GetRotationQuaternion(Vector.UnitY, panInclination);
-        panInclination = 0;
-        
+        this.panInclination = 0;
+
         var rot = Quaternion.GetRotationQuaternion(Vector.UnitX, panRotate);
-        panRotate = 0;
+        this.panRotate = 0;
 
         pan.SetTarget(az * inc * rot * pan.Target, false);
         pan.Track();
@@ -127,16 +117,19 @@ internal class Projector
     }
     private void CylindricalProject(ref Vector VectorIn3DSpace, ref QPoint P)
     {
-        P.Overwrite(halfScreenSize.Width - VectorIn3DSpace.Azimuth * Zoom, halfScreenSize.Height - VectorIn3DSpace.Inclination * Zoom);
+        P.Overwrite(halfScreenSize.Width - VectorIn3DSpace.Azimuth * Zoom,
+                    halfScreenSize.Height - VectorIn3DSpace.Inclination * Zoom);
     }
     private void StereographicProject(ref Vector VectorIn3DSpace, ref QPoint P)
     {
-        P.Overwrite(halfScreenSize.Width - Zoom * VectorIn3DSpace.Y / VectorIn3DSpace.X, halfScreenSize.Height - Zoom * VectorIn3DSpace.Z / VectorIn3DSpace.X);
+        P.Overwrite(halfScreenSize.Width - Zoom * VectorIn3DSpace.Y / VectorIn3DSpace.X,
+                    halfScreenSize.Height - Zoom * VectorIn3DSpace.Z / VectorIn3DSpace.X);
     }
     private void OrthographicProject(ref Vector VectorIn3DSpace, ref QPoint P)
     {
         double inc = VectorIn3DSpace.Inclination;
-        P.Overwrite(halfScreenSize.Width - Zoom * Math.Cos(inc) * Math.Sin(VectorIn3DSpace.Azimuth), halfScreenSize.Height - Zoom * Math.Sin(inc));
+        P.Overwrite(halfScreenSize.Width - Zoom * Math.Cos(inc) * Math.Sin(VectorIn3DSpace.Azimuth),
+                    halfScreenSize.Height - Zoom * Math.Sin(inc));
     }
     public bool Project2DLine(Vector PointIn3DSpace1, Vector PointIn3DSpace2, out QPoint ProjectedPointIn2D1, out QPoint ProjectedPointIn2D2)
     {
@@ -193,7 +186,7 @@ internal class Projector
 
         project(ref v, ref ProjectedPointIn2D);
 
-        if (!FailIfOffscreen || 
+        if (!FailIfOffscreen ||
             (ProjectedPointIn2D.X >= minPoint.X &&
              ProjectedPointIn2D.X <= maxPoint.X &&
              ProjectedPointIn2D.Y >= minPoint.Y &&
@@ -204,30 +197,13 @@ internal class Projector
 
         return false;
     }
-    private enum ClipCode : int { Inside = 0, Left = 1, Right = 2, Bottom = 4, Top = 8 }
-    private ClipCode GetClipCode(QPoint P)
-    {
-        ClipCode code;
 
-        code = ClipCode.Inside;
-
-        if (P.X < minPoint.X)
-            code |= ClipCode.Left;
-        else if (P.X > maxPoint.X)
-            code |= ClipCode.Right;
-
-        if (P.Y < minPoint.Y)
-            code |= ClipCode.Bottom;
-        else if (P.Y > maxPoint.Y)
-            code |= ClipCode.Top;
-
-        return code;
-    }
     // Cohen–Sutherland clipping algorithm
+    // https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
     private bool LineClip(ref QPoint P1, ref QPoint P2)
     {
-        ClipCode cc1 = GetClipCode(P1);
-        ClipCode cc2 = GetClipCode(P2);
+        ClipCode cc1 = getClipCode(P1);
+        ClipCode cc2 = getClipCode(P2);
 
         while (true)
         {
@@ -245,8 +221,8 @@ internal class Projector
 
                 // failed both tests, so calculate the line segment to clip
                 // from an outside point to an intersection with clip edge
-                
-                // At least one endpoint is outside the clip rectangle; pick it.
+
+                // One endpoint is outside the clip rectangle; pick it.
                 ClipCode cc = (cc1 != ClipCode.Inside) ? cc1 : cc2;
 
                 // Now find the intersection point;
@@ -275,14 +251,34 @@ internal class Projector
                 if (cc.Equals(cc1))
                 {
                     P1.Overwrite(p);
-                    cc1 = GetClipCode(P1);
+                    cc1 = getClipCode(P1);
                 }
                 else
                 {
                     P2.Overwrite(p);
-                    cc2 = GetClipCode(P2);
+                    cc2 = getClipCode(P2);
                 }
             }
         }
+        ClipCode getClipCode(QPoint P)
+        {
+            ClipCode code;
+
+            code = ClipCode.Inside;
+
+            if (P.X < minPoint.X)
+                code |= ClipCode.Left;
+            else if (P.X > maxPoint.X)
+                code |= ClipCode.Right;
+
+            if (P.Y < minPoint.Y)
+                code |= ClipCode.Bottom;
+            else if (P.Y > maxPoint.Y)
+                code |= ClipCode.Top;
+
+            return code;
+        }
     }
+    [Flags]
+    enum ClipCode : int { Inside = 0, Left = 1, Right = 2, Bottom = 4, Top = 8 }
 }
